@@ -1,6 +1,7 @@
 #include "kmm.h"
 #include "ui_kmm.h"
 
+#include <QDateTime>
 #include "mangaeditor.h"
 #include "preferences.h"
 
@@ -9,7 +10,7 @@ class kmmPrivate {
 public:
     kmmPrivate(kmm * parent) : q_ptr(parent), tabCounter(0)
     {
-
+        qsrand(QDateTime::currentMSecsSinceEpoch());
     }
 
     kmm * const q_ptr;
@@ -35,7 +36,9 @@ public:
 
     void closeTab(QTabWidget* tbW, int index) {
         //TODO: Try to save the project first
+        QWidget * tab = tbW->widget(index);
         tbW->removeTab(index);
+        delete tab;
         if (!tbW->count())
             newProject(tbW);
     }
@@ -49,15 +52,15 @@ kmm::kmm(QWidget *parent) :
     d_ptr(new kmmPrivate(this))
 {
     ui->setupUi(this);
-    d_ptr->newProject(ui->tabWidget);
+    d_ptr->newProject(ui->kmm_main_tab_widget);
 
-    connect(ui->actNew, &QAction::triggered, [=](){ d_ptr->newProject(ui->tabWidget); });
-    connect(ui->actClose, &QAction::triggered, [=](){ d_ptr->closeTab(ui->tabWidget, ui->tabWidget->currentIndex()); });
+    connect(ui->actNew, &QAction::triggered, [=](){ d_ptr->newProject(ui->kmm_main_tab_widget); });
+    connect(ui->actClose, &QAction::triggered, [=](){ d_ptr->closeTab(ui->kmm_main_tab_widget, ui->kmm_main_tab_widget->currentIndex()); });
     connect(ui->actPreferences, &QAction::triggered, [=](){ d_ptr->preferences(); });
     connect(ui->actAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
     connect(ui->actQuit, &QAction::triggered, this, &kmm::close);
 
-    connect(ui->tabWidget, &QTabWidget::tabCloseRequested, [=](int index) { d_ptr->closeTab(ui->tabWidget, index); });
+    connect(ui->kmm_main_tab_widget, &QTabWidget::tabCloseRequested, [=](int index) { d_ptr->closeTab(ui->kmm_main_tab_widget, index); });
 }
 
 kmm::~kmm() {

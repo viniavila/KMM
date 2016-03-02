@@ -7,9 +7,10 @@ namespace Ui {
 class MangaEditor;
 }
 
-class MangaEditor : public QWidget
-{
+class MangaEditorPrivate;
+class MangaEditor : public QWidget {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(MangaEditor)
 
 public:
     explicit MangaEditor(QWidget *parent = 0);
@@ -17,6 +18,7 @@ public:
 
 private:
     Ui::MangaEditor *ui;
+    MangaEditorPrivate * const d_ptr;
 };
 
 #endif // MANGAEDITOR_H
