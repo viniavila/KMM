@@ -2,16 +2,24 @@
 #include "ui_preferences.h"
 #include <QSettings>
 #include <QFileDialog>
+#include <QDir>
+#include <QDebug>
 
-QString selectFile(QWidget* parent) {
-    QString fN = QFileDialog::getOpenFileName(parent,
-                                              Preferences::tr("Select Executable Path"),
-                                      #ifdef Q_OS_LINUX
-                                              QString("/usr/bin"),
-                                      #else
-                                              QString(),
-                                      #endif
-                                              QString(), 0, 0);
+QString selectFile(const QString& path, QWidget* parent) {
+    QString dir;
+    if (path.isEmpty()) {
+#ifdef Q_OS_LINUX
+        dir = QString("/usr/bin");
+#endif
+    }
+    else {
+        QDir d(path);
+        d.cdUp();
+        dir = d.absolutePath();
+    }
+    QString fN = QFileDialog::getOpenFileName(parent, Preferences::tr("Select Executable Path"), dir, QString(), 0, 0);
+    if (fN.isEmpty())
+        return path;
     return fN;
 }
 
@@ -24,8 +32,8 @@ Preferences::Preferences(QWidget *parent) :
     ui->txtKindlegen->setText(s.value("KINDLEGEN_PATH").toString());
     ui->txtPython->setText(s.value("PYTHON_PATH").toString());
 
-    connect(ui->btnKindlegen, &QPushButton::clicked, [=]() { ui->txtKindlegen->setText(selectFile(this)); });
-    connect(ui->btnPython, &QPushButton::clicked, [=]() { ui->txtPython->setText(selectFile(this)); });
+    connect(ui->btnKindlegen, &QPushButton::clicked, [=]() { ui->txtKindlegen->setText(selectFile(ui->txtKindlegen->text(), this)); });
+    connect(ui->btnPython, &QPushButton::clicked, [=]() { ui->txtPython->setText(selectFile(ui->txtPython->text(), this)); });
 }
 
 Preferences::~Preferences() {

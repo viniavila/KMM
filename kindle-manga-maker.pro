@@ -26,3 +26,6 @@ FORMS    += \
     mangaeditor.ui \
     kmm.ui \
     preferences.ui
+
+DISTFILES += \
+    TODO_LIST

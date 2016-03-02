@@ -1,0 +1,19 @@
+- UI
+* Fill Language ComboBox with main the languages (PT, EN, SP, EO, DE, FR, IT, JP, CN, RS, AR, HB)
+* Configure Select Cover Button
+* Configure Select Pictures Folder
+* Configure Add Button
+* Configure Remove Button
+* Configure Open Menu Option
+* Configure Save Menu Option
+* Configure Save AS Menu Option
+* Configure Create .mobi Menu Option
+* Configure About Menu Option
+* Configure Help Menu Option
+* Create a simple picture viewer
+
+- Other
+* Set temporary folder for each tab
+* Clean temporary folder after closing project tab
+* Mark project widget as window modified if editing a project
+* if tab is marked as window modified, give the user the chance to save the project for further modification before closing the tab

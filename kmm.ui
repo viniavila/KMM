@@ -44,6 +44,7 @@
     <addaction name="actionOpen_Manga"/>
     <addaction name="actionSave_Manga"/>
     <addaction name="actionSave_As"/>
+    <addaction name="actClose"/>
     <addaction name="separator"/>
     <addaction name="actQuit"/>
    </widget>
@@ -131,6 +132,17 @@
   <action name="actionAbout_Kindle_Manga_Maker">
    <property name="text">
     <string>About Kindle Manga Maker</string>
+   </property>
+  </action>
+  <action name="actClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+   <property name="toolTip">
+    <string>Close the current tab.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
    </property>
   </action>
  </widget>

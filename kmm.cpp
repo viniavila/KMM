@@ -34,6 +34,7 @@ public:
     }
 
     void closeTab(QTabWidget* tbW, int index) {
+        //TODO: Try to save the project first
         tbW->removeTab(index);
         if (!tbW->count())
             newProject(tbW);
@@ -51,6 +52,7 @@ kmm::kmm(QWidget *parent) :
     d_ptr->newProject(ui->tabWidget);
 
     connect(ui->actNew, &QAction::triggered, [=](){ d_ptr->newProject(ui->tabWidget); });
+    connect(ui->actClose, &QAction::triggered, [=](){ d_ptr->closeTab(ui->tabWidget, ui->tabWidget->currentIndex()); });
     connect(ui->actPreferences, &QAction::triggered, [=](){ d_ptr->preferences(); });
     connect(ui->actAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
     connect(ui->actQuit, &QAction::triggered, this, &kmm::close);
