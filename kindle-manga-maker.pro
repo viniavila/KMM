@@ -15,17 +15,20 @@ CONFIG += c++11
 SOURCES += main.cpp\
     mangaeditor.cpp \
     kmm.cpp \
-    preferences.cpp
+    preferences.cpp \
+    about.cpp
 
 HEADERS  += \
     mangaeditor.h \
     kmm.h \
-    preferences.h
+    preferences.h \
+    about.h
 
 FORMS    += \
     mangaeditor.ui \
     kmm.ui \
-    preferences.ui
+    preferences.ui \
+    about.ui
 
 DISTFILES += \
     TODO_LIST

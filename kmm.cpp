@@ -4,6 +4,9 @@
 #include <QDateTime>
 #include "mangaeditor.h"
 #include "preferences.h"
+#include "about.h"
+
+#include <QDebug>
 
 class kmmPrivate {
     Q_DECLARE_PUBLIC(kmm)
@@ -43,6 +46,18 @@ public:
             newProject(tbW);
     }
 
+    void about() {
+        About dlg(QPixmap(),
+                  "© 2016 Vinícius de Ávila Jorge",
+                  "",
+                  "vinicius.avila.jorge@gmail.com",
+                  "License: <a href='http://www.gnu.org/licenses/gpl.txt'>GNU GPL version 3</a>",
+                  q_ptr);
+        dlg.setWindowModality(Qt::WindowModal);
+        dlg.setWebsite("https://www.bitbucket.org/viniavila/kindle-manga-maker", "Visit KMM oficial website!");
+        dlg.exec();
+    }
+
 };
 
 
@@ -57,6 +72,7 @@ kmm::kmm(QWidget *parent) :
     connect(ui->actNew, &QAction::triggered, [=](){ d_ptr->newProject(ui->kmm_main_tab_widget); });
     connect(ui->actClose, &QAction::triggered, [=](){ d_ptr->closeTab(ui->kmm_main_tab_widget, ui->kmm_main_tab_widget->currentIndex()); });
     connect(ui->actPreferences, &QAction::triggered, [=](){ d_ptr->preferences(); });
+    connect(ui->actAbout, &QAction::triggered, [=](){ d_ptr->about(); });
     connect(ui->actAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
     connect(ui->actQuit, &QAction::triggered, this, &kmm::close);
 

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>710</width>
+    <width>1237</width>
     <height>628</height>
    </rect>
   </property>
@@ -32,8 +32,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>710</width>
-     <height>22</height>
+     <width>1237</width>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -50,8 +50,11 @@
    </widget>
    <widget class="QMenu" name="menuRun">
     <property name="title">
-     <string>Run</string>
+     <string>Export</string>
     </property>
+    <addaction name="actionExport_to_cbr"/>
+    <addaction name="actionExport_to_cbz"/>
+    <addaction name="actionExport_to_epub"/>
     <addaction name="actionCreate_mobi"/>
     <addaction name="separator"/>
     <addaction name="actPreferences"/>
@@ -63,7 +66,7 @@
     <addaction name="actionTopics"/>
     <addaction name="separator"/>
     <addaction name="actAboutQt"/>
-    <addaction name="actionAbout_Kindle_Manga_Maker"/>
+    <addaction name="actAbout"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuRun"/>
@@ -108,7 +111,7 @@
   </action>
   <action name="actionCreate_mobi">
    <property name="text">
-    <string>Create .mobi</string>
+    <string>Export to .mobi</string>
    </property>
   </action>
   <action name="actPreferences">
@@ -129,7 +132,7 @@
     <string>About Qt</string>
    </property>
   </action>
-  <action name="actionAbout_Kindle_Manga_Maker">
+  <action name="actAbout">
    <property name="text">
     <string>About Kindle Manga Maker</string>
    </property>
@@ -143,6 +146,21 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionExport_to_epub">
+   <property name="text">
+    <string>Export to .epub</string>
+   </property>
+  </action>
+  <action name="actionExport_to_cbr">
+   <property name="text">
+    <string>Export to .cbr</string>
+   </property>
+  </action>
+  <action name="actionExport_to_cbz">
+   <property name="text">
+    <string>Export to .cbz</string>
    </property>
   </action>
  </widget>
