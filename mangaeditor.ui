@@ -56,6 +56,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="btnViewChapter">
+          <property name="text">
+           <string>View Chapter</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="btnRemoveChapter">
           <property name="enabled">
            <bool>true</bool>
@@ -166,7 +173,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Date</string>
+         <string>Release Date</string>
         </property>
        </widget>
       </item>
@@ -190,7 +197,7 @@
       <item row="4" column="2">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Language</string>
+         <string>Ebook Language</string>
         </property>
        </widget>
       </item>
@@ -268,6 +275,11 @@
           <string>GIF</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Same as the Input</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="1" column="0">
@@ -312,7 +324,7 @@
        </layout>
       </item>
       <item row="7" column="0" colspan="4">
-       <widget class="QFrame" name="">
+       <widget class="QFrame" name="frame">
         <property name="frameShape">
          <enum>QFrame::Box</enum>
         </property>
@@ -426,6 +438,7 @@
   <tabstop>chkChapterTitle</tabstop>
   <tabstop>txtChapterTitle</tabstop>
   <tabstop>addChapter</tabstop>
+  <tabstop>btnViewChapter</tabstop>
   <tabstop>btnRemoveChapter</tabstop>
   <tabstop>lstChapters</tabstop>
  </tabstops>

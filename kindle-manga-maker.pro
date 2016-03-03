@@ -16,13 +16,15 @@ SOURCES += main.cpp\
     mangaeditor.cpp \
     kmm.cpp \
     preferences.cpp \
-    about.cpp
+    about.cpp \
+    projarchive.cpp
 
 HEADERS  += \
     mangaeditor.h \
     kmm.h \
     preferences.h \
-    about.h
+    about.h \
+    projarchive.h
 
 FORMS    += \
     mangaeditor.ui \
@@ -32,3 +34,5 @@ FORMS    += \
 
 DISTFILES += \
     TODO_LIST
+
+LIBS += -lzip

@@ -7,8 +7,7 @@ namespace Ui {
 class Preferences;
 }
 
-class Preferences : public QDialog
-{
+class Preferences : public QDialog {
     Q_OBJECT
 
 public:

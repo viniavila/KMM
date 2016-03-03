@@ -24,7 +24,8 @@ public:
         tmpPath.append(QCryptographicHash::hash(ba, QCryptographicHash::Md5).toHex());
         QDir().mkdir(tmpPath);
         settingsPath = tmpPath + DS + QString("content.ini");
-        htmlPath = tmpPath + DS + QString("html");
+        chaptersPath = tmpPath + DS + QString("chapters");
+        QDir().mkdir(chaptersPath);
     }
 
     void removeTemporaryFolder() {
@@ -133,7 +134,7 @@ public:
 
     MangaEditor * const q_ptr;
     QString tmpPath;
-    QString htmlPath;
+    QString chaptersPath;
     QString settingsPath;
     bool tabModified;
 };
