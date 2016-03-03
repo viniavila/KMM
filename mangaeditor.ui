@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1131</width>
-    <height>646</height>
+    <width>812</width>
+    <height>535</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,7 +34,7 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QCheckBox" name="checkBox_3">
+       <widget class="QCheckBox" name="chkChapterTitle">
         <property name="text">
          <string>Table of Contents Title</string>
         </property>
@@ -43,7 +43,7 @@
       <item row="2" column="0" colspan="3">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="addChapter">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -51,12 +51,15 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Add</string>
+           <string>Add Chapter</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_4">
+         <widget class="QPushButton" name="btnRemoveChapter">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -64,37 +67,47 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Remove</string>
+           <string>Remove Chapter</string>
           </property>
          </widget>
         </item>
        </layout>
       </item>
       <item row="1" column="1" colspan="2">
-       <widget class="QLineEdit" name="lineEdit_6">
+       <widget class="QLineEdit" name="txtChapterTitle">
         <property name="enabled">
          <bool>false</bool>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEdit_5">
+       <widget class="QLineEdit" name="txtPicFolder">
         <property name="readOnly">
          <bool>true</bool>
         </property>
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="btnSelectPicFolder">
         <property name="text">
          <string>Select</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0" colspan="3">
-       <widget class="QTreeView" name="treeView"/>
+       <widget class="QListWidget" name="lstChapters">
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+       </widget>
       </item>
      </layout>
+     <zorder>lstChapters</zorder>
+     <zorder>label_8</zorder>
+     <zorder>chkChapterTitle</zorder>
+     <zorder>txtChapterTitle</zorder>
+     <zorder>txtPicFolder</zorder>
+     <zorder>btnSelectPicFolder</zorder>
     </widget>
    </item>
    <item row="1" column="1">
@@ -110,7 +123,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QPlainTextEdit" name="plainTextEdit_2">
+       <widget class="QPlainTextEdit" name="txtOutput">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -119,6 +132,9 @@
         </property>
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
         </property>
        </widget>
       </item>
@@ -137,84 +153,20 @@
       <string>Ebook General Data</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
+      <item row="6" column="2" colspan="2">
+       <widget class="QCheckBox" name="chkDivideDouble">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;unchecked:&lt;/span&gt; double-page pictures will be rotated counterclockwise and kept in the same page.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;checked:&lt;/span&gt; doube-page pictures wil be half splitted and put in separated pages (the first and the second will determined by the selected reading direction - left-to-right will put the left side first and vice-versa).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Divide Double-Page Pictures</string>
+        </property>
+       </widget>
+      </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Date</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>Description</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Publisher</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Language</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="3">
-       <widget class="QComboBox" name="comboBox">
-        <property name="toolTip">
-         <string>If not selected, it will adopt the system's default language.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="3">
-       <widget class="QLineEdit" name="lineEdit_2"/>
-      </item>
-      <item row="3" column="1" colspan="3">
-       <widget class="QLineEdit" name="lineEdit_7"/>
-      </item>
-      <item row="6" column="0" colspan="4">
-       <widget class="QCheckBox" name="checkBox">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;unchecked:&lt;/span&gt; manga style (right to left)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;checked:&lt;/span&gt; western comic style (left to right)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Left-To-Right Reading Direction</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1" colspan="3">
-       <widget class="QLineEdit" name="txtName">
-        <property name="toolTip">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QDateEdit" name="dateEdit">
-        <property name="displayFormat">
-         <string>dd/MM/yyyy</string>
-        </property>
-        <property name="calendarPopup">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1" colspan="3">
-       <widget class="QLineEdit" name="lineEdit_3"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Author</string>
         </property>
        </widget>
       </item>
@@ -225,6 +177,30 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="1" colspan="3">
+       <widget class="QLineEdit" name="txtPublisher"/>
+      </item>
+      <item row="4" column="3">
+       <widget class="QComboBox" name="cboLanguage">
+        <property name="toolTip">
+         <string>If not selected, it will adopt the system's default language.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Language</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Publisher</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
@@ -232,62 +208,47 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="0" colspan="4">
-       <widget class="QCheckBox" name="checkBox_2">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;unchecked:&lt;/span&gt; double-page pictures will be rotated counterclockwise and kept in the same page.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;checked:&lt;/span&gt; doube-page pictures wil be half splitted and put in separated pages (the first and the second will determined by the selected reading direction - left-to-right will put the left side first and vice-versa).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Divide Double-Page Pictures</string>
+         <string>Description</string>
         </property>
        </widget>
       </item>
       <item row="5" column="1" colspan="3">
-       <widget class="QPlainTextEdit" name="plainTextEdit">
+       <widget class="QPlainTextEdit" name="txtDescription">
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
         <property name="tabChangesFocus">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="8" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Cover Image</string>
+      <item row="0" column="1" colspan="3">
+       <widget class="QLineEdit" name="txtName">
+        <property name="toolTip">
+         <string/>
         </property>
        </widget>
       </item>
-      <item row="8" column="1" colspan="3">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLineEdit" name="lineEdit_4">
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Select</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+      <item row="1" column="1" colspan="3">
+       <widget class="QLineEdit" name="txtAuthor"/>
       </item>
-      <item row="9" column="0" colspan="2">
-       <widget class="QLabel" name="label_10">
+      <item row="6" column="0" colspan="2">
+       <widget class="QCheckBox" name="chkLR">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;unchecked:&lt;/span&gt; manga style (right to left)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;checked:&lt;/span&gt; western comic style (left to right)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
-         <string>Output Images Format</string>
+         <string>Left-To-Right Reading Direction</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="2" colspan="2">
+      <item row="8" column="2" colspan="2">
        <widget class="QComboBox" name="cboOutputType">
         <property name="currentIndex">
          <number>0</number>
@@ -309,6 +270,137 @@
         </item>
        </widget>
       </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Author</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QDateEdit" name="dteDate">
+        <property name="displayFormat">
+         <string>dd/MM/yyyy</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0" colspan="2">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Output Images Format</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1" colspan="3">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="rightMargin">
+         <number>10</number>
+        </property>
+        <item>
+         <widget class="QLineEdit" name="txtISBN"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnISBN">
+          <property name="text">
+           <string>Generate</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="7" column="0" colspan="4">
+       <widget class="QFrame" name="">
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Cover Image</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnSelectCover">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Select</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnViewCover">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>View</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnRemoveCover">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Remove</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -316,32 +408,33 @@
  </widget>
  <tabstops>
   <tabstop>txtName</tabstop>
-  <tabstop>lineEdit_2</tabstop>
-  <tabstop>lineEdit_3</tabstop>
-  <tabstop>lineEdit_7</tabstop>
-  <tabstop>dateEdit</tabstop>
-  <tabstop>comboBox</tabstop>
-  <tabstop>plainTextEdit</tabstop>
-  <tabstop>checkBox</tabstop>
-  <tabstop>checkBox_2</tabstop>
-  <tabstop>lineEdit_4</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>txtAuthor</tabstop>
+  <tabstop>txtPublisher</tabstop>
+  <tabstop>txtISBN</tabstop>
+  <tabstop>btnISBN</tabstop>
+  <tabstop>dteDate</tabstop>
+  <tabstop>cboLanguage</tabstop>
+  <tabstop>txtDescription</tabstop>
+  <tabstop>chkLR</tabstop>
+  <tabstop>chkDivideDouble</tabstop>
+  <tabstop>btnSelectCover</tabstop>
+  <tabstop>btnViewCover</tabstop>
+  <tabstop>btnRemoveCover</tabstop>
   <tabstop>cboOutputType</tabstop>
-  <tabstop>lineEdit_5</tabstop>
-  <tabstop>pushButton_2</tabstop>
-  <tabstop>checkBox_3</tabstop>
-  <tabstop>lineEdit_6</tabstop>
-  <tabstop>pushButton_3</tabstop>
-  <tabstop>pushButton_4</tabstop>
-  <tabstop>treeView</tabstop>
-  <tabstop>plainTextEdit_2</tabstop>
+  <tabstop>txtPicFolder</tabstop>
+  <tabstop>btnSelectPicFolder</tabstop>
+  <tabstop>chkChapterTitle</tabstop>
+  <tabstop>txtChapterTitle</tabstop>
+  <tabstop>addChapter</tabstop>
+  <tabstop>btnRemoveChapter</tabstop>
+  <tabstop>lstChapters</tabstop>
  </tabstops>
  <resources/>
  <connections>
   <connection>
-   <sender>checkBox_3</sender>
+   <sender>chkChapterTitle</sender>
    <signal>toggled(bool)</signal>
-   <receiver>lineEdit_6</receiver>
+   <receiver>txtChapterTitle</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">

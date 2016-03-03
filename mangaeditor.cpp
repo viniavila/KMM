@@ -5,6 +5,7 @@
 #include <QDir>
 #include <QDebug>
 #include <QSettings>
+#include <QUuid>
 
 #define DS QDir::separator()
 
@@ -109,6 +110,27 @@ public:
         widget->setTabText(index, tabText);
     }
 
+    QString generateISBN() {
+        QString uuid = QUuid::createUuid().toString();
+        uuid.remove('{').remove('}');
+        return uuid;
+    }
+
+    void addLanguages(QComboBox* cb) {
+//        (PT, EN, SP, EO, DE, FR, IT, JP, CN, RS, AR, HB)
+        QLocale l;
+        QList<QLocale::Language> languages;
+        languages << QLocale::English << QLocale::Portuguese << QLocale::Spanish << QLocale::Esperanto
+                  << QLocale::German << QLocale::French << QLocale::Italian << QLocale::Japanese
+                  << QLocale::Chinese << QLocale::Russian << QLocale::Arabic << QLocale::Hebrew;
+        QStringList languageAbbrev({"en", "pt", "es", "eo", "de", "fr", "it", "ja", "zh", "ru", "ar", "he"});
+
+        for (int i=0; i<qMin(languages.size(),languageAbbrev.size()); ++i)
+            cb->addItem(QLocale::languageToString(languages.at(i)), languageAbbrev.at(i));
+
+        cb->setCurrentIndex(0);
+    }
+
     MangaEditor * const q_ptr;
     QString tmpPath;
     QString htmlPath;
@@ -122,12 +144,18 @@ MangaEditor::MangaEditor(QWidget *parent) :
     d_ptr(new MangaEditorPrivate(this))
 {
     ui->setupUi(this);
+    ui->dteDate->setDate(QDate::currentDate());
+    d_ptr->addLanguages(ui->cboLanguage);
     setFocusProxy(ui->txtName);
 
     d_ptr->createTemporaryFolder();
     d_ptr->connectWidgetSignals();
 
+    connect(ui->btnISBN, &QPushButton::clicked, [=](){ ui->txtISBN->setText(d_ptr->generateISBN()); });
+
     d_ptr->setValueToTemp(ui->cboOutputType, false);
+    d_ptr->setValueToTemp(ui->dteDate, false);
+    d_ptr->setValueToTemp(ui->cboLanguage, false);
 
 }
 
