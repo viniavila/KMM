@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = kindle-manga-maker
 TEMPLATE = app
 CONFIG += c++11
+DEFINES *= QT_USE_QSTRINGBUILDER
 
 SOURCES += main.cpp\
     mangaeditor.cpp \
@@ -36,3 +37,6 @@ DISTFILES += \
     TODO_LIST
 
 LIBS += -lzip
+
+RESOURCES += \
+    resources.qrc
