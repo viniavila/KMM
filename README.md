@@ -34,23 +34,33 @@ The installation is pretty straight if you have already the right packages. Basi
 
 Having installed all necessary stuff, let's go to the steps
 
-1.
-   a) Clone this repository with one of the two commands below
+* Clone this repository with one of the two commands below:
+
+
+```
+#!bash
 git clone git@bitbucket.org:viniavila/kindle-manga-maker.git
 git clone https://viniavila@bitbucket.org/viniavila/kindle-manga-maker.git
+```
 
 So go to the folder:
+
+```
+#!bash
 cd kindle-manga-maker/
+```
 
-OR
+* Compile the program with
 
-    b) Download the master zip file here https://bitbucket.org/viniavila/kindle-manga-maker/downloads. Choose .zip, .tar.gz or .tar.bz2 file. Extract the file and enter in the folder. Open a Terminal here.
+```
+#!bash
 
-2. Compile the program with
 qmake kindle-manga-maker.pro
 make
 
-3. Double click the file compiled.
+```
+
+* Double click the file compiled.
 
 I will make a better way to install the binary directly along a nice .desktop launcher.
 For Arch users, an AUR package is planned. Any Ubuntu user is free to package this program into a .deb file. Other distros users are free to package the program as well.
