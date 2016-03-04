@@ -11,10 +11,12 @@ class kmmPrivate;
 class kmm : public QMainWindow {
     Q_OBJECT
     Q_DECLARE_PRIVATE(kmm)
-
 public:
     explicit kmm(QWidget *parent = 0);
     ~kmm();
+
+protected:
+    virtual void closeEvent(QCloseEvent* e);
 
 private:
     Ui::kmm *ui;
