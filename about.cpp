@@ -1,6 +1,7 @@
 #include "about.h"
 #include "ui_about.h"
-#include <QDebug>
+#include <QMessageBox>
+#include <QPushButton>
 
 About::About(const QPixmap& icon, const QString& copyright, const QString& website, const QString& email, const QString& license, QWidget *parent) :
     About(parent)
@@ -58,6 +59,12 @@ void About::setEmail(const QString &email) {
 
 void About::setLicense(const QString &license) {
     ui->lblLicense->setText(license);
+}
+
+void About::addButtonLicense(const QString& caption, const QString& text) {
+    QPushButton *btn = new QPushButton(caption);
+    ui->licBtnLayout->insertWidget(ui->licBtnLayout->count()-1, btn, 0, Qt::AlignLeft|Qt::AlignVCenter);
+    connect(btn, &QPushButton::clicked, [=](){ QMessageBox(QMessageBox::NoIcon, caption, text, QMessageBox::Close, this).exec();  });
 }
 
 QString About::copyright() const {

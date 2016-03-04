@@ -26,6 +26,7 @@ public:
     void setWebsite(const QString& link, const QString& text = QString());
     void setEmail(const QString& email);
     void setLicense(const QString& license);
+    void addButtonLicense(const QString& caption, const QString& text);
 
     QString copyright() const;
     QString websiteText() const;
