@@ -1,5 +1,8 @@
 #include "projarchive.h"
+
+#include <iostream>
 #include <zip.h>
+
 #include <QDir>
 
 class ProjArchivePrivate {
@@ -16,7 +19,10 @@ public:
         else za = zip_open(this->path, ZIP_CREATE|ZIP_EXCL, &errCode);
 
         if (errCode) {
-            // TODO: throw error
+            // Throw Error
+            char errMessage[100];
+            zip_error_to_str(errMessage, 100, errCode, errno);
+            std::cout << "ERROR: " << errMessage << std::endl;
         }
         else {
             isValid = true;
@@ -28,6 +34,7 @@ public:
                     isValid = false;
                     zip_close(za);
                     za = NULL;
+                    std::cout << "ERROR: File appears not to be a Kindle Manga Project (.kmp) file." << std::endl;
                 }
             }
         }
@@ -49,6 +56,8 @@ public:
             QString tag(arkD+f);
             if (zs == NULL || zip_file_add(za, tag.toUtf8().data(), zs, ZIP_FL_OVERWRITE|ZIP_FL_ENC_UTF_8) < 0) {
                 // Throw error adding the file
+                const char* errMessage = zip_strerror(za);
+                std::cout << "ERROR: " << errMessage << std::endl;
                 zip_source_free(zs);
             }
         }
@@ -102,9 +111,10 @@ void ProjArchive::extract(const QString &tmpPath) const {
             const zip_int64_t read = zip_fread(zf, buffer, stat.size);
             if (read <= 0) {
                 // Throw error
+                const char* errMessage = zip_file_strerror(zf);
+                std::cout << "ERROR: " << errMessage << std::endl;
             }
             else {
-                QByteArray array(buffer, stat.size);
                 QFileInfo fi(tmpPath + "/" + fName);
 
                 if (!fi.absoluteDir().exists())
@@ -112,7 +122,7 @@ void ProjArchive::extract(const QString &tmpPath) const {
 
                 QFile f(fi.absoluteFilePath());
                 if (f.open(QIODevice::WriteOnly)) {
-                    f.write(array);
+                    f.write(buffer, stat.size);
                     f.close();
                 }
             }

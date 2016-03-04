@@ -1,9 +1,9 @@
 #include "preferences.h"
 #include "ui_preferences.h"
-#include <QSettings>
-#include <QFileDialog>
+
 #include <QDir>
-#include <QDebug>
+#include <QFileDialog>
+#include <QSettings>
 
 QString selectFile(const QString& path, QWidget* parent) {
     QString dir;
