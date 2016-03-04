@@ -6,7 +6,7 @@
 
 ## Translation notes ##
 
-The interface is written in English. Because I'm not native English speaker, mistakes can appear. If it happens, let me know emailing me. I will provide Brazilian Portuguese translation soon (I'm Brazilian). Help in translation is appreciated. If you want to translate the program to your language, open the kmm-en.ts file provided with this program in Qt Linguist, make the translation, and email me the translated file. I will embed your translation and give you the credit, of course.
+The interface is written in English. Because I'm not native English speaker, mistakes can appear. If it happens, let me know emailing me. I will provide Brazilian Portuguese translation soon (I'm Brazilian). Help in translation is appreciated. If you want to translate the program to your language, open the kmm-en.ts file provided with this program in Qt Linguist, make the translation, save and email me the translated file. I will embed your translation and give you the credit, of course.
 
 ## Motivation ##
 
