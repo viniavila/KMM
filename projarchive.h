@@ -2,9 +2,10 @@
 #define PROJARCHIVE_H
 
 #include <QString>
-#include <zip.h>
 
+class ProjArchivePrivate;
 class ProjArchive {
+    Q_DECLARE_PRIVATE(ProjArchive)
 public:
     enum IOMode {
         InputMode,
@@ -22,11 +23,7 @@ public:
     static void loadFromFile(const QString& filePath, const QString& tmpPath);
 
 private:
-    const char* m_path;
-    IOMode m_io;
-    int errCode;
-    bool m_isValid;
-    zip_t* za;
+    ProjArchivePrivate * const d_ptr;
 };
 
 #endif // PROJARCHIVE_H
