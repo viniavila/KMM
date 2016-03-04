@@ -13,8 +13,17 @@ class MangaEditor : public QWidget {
     Q_DECLARE_PRIVATE(MangaEditor)
 
 public:
-    explicit MangaEditor(QWidget *parent = 0);
+    MangaEditor(QWidget *parent = 0);
+    MangaEditor(const QString& filename, QWidget *parent = 0);
     ~MangaEditor();
+
+    void setProjectFile(const QString&);
+    QString projectFile() const;
+
+    void setTabModified(bool);
+    bool tabModified() const;
+
+    QString tempPath() const;
 
 private:
     Ui::MangaEditor *ui;
