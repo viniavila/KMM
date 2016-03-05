@@ -242,6 +242,7 @@ public:
         q_ptr->connect(ui->btnSelectCover, &QPushButton::clicked, [=](){ selectCover(ui); });
         q_ptr->connect(ui->btnViewCover, &QPushButton::clicked, [=](){ viewCover(); });
         q_ptr->connect(ui->btnRemoveCover, &QPushButton::clicked, [=](){ removeCover(ui); });
+        q_ptr->connect(ui->btnSelectPicFolder, &QPushButton::clicked, [=](){ selectPictureFolder(ui); });
     }
 
     void selectCover(Ui::MangaEditor *ui) {
@@ -288,6 +289,25 @@ public:
             dlg.setWindowTitle(MangaEditor::tr("View Cover"));
             dlg.exec();
         }
+    }
+
+    void selectPictureFolder(Ui::MangaEditor *ui) {
+        QString folder = QFileDialog::getExistingDirectory(q_ptr,
+                                                           MangaEditor::tr("Select Chapter Folder"),
+                                                           QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+        ui->txtPicFolder->setText(folder);
+    }
+
+    void addChapter() {
+
+    }
+
+    void removeChapter() {
+
+    }
+
+    void viewChapterImages() {
+
     }
 
     MangaEditor * const q_ptr;
