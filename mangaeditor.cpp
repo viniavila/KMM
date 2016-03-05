@@ -4,9 +4,13 @@
 
 #include <QCryptographicHash>
 #include <QDir>
+#include <QFileDialog>
+#include <QImageReader>
 #include <QSettings>
 #include <QStandardPaths>
 #include <QUuid>
+
+#include <QDebug>
 
 #define DS QDir::separator()
 
@@ -222,18 +226,57 @@ public:
 
         if (!filename.isEmpty()) {
             loadDataToUI(ui->GeneralData);
+            QStringList files = QDir(tmpPath).entryList({"cover-image.*"});
+            if (files.size()) {
+                ui->btnViewCover->setEnabled(true);
+                ui->btnRemoveCover->setEnabled(true);
+            }
         }
 
         connectWidgetSignals(ui->GeneralData);
         setAllValuesToTemp(ui->GeneralData);
 
         q_ptr->connect(ui->btnISBN, &QPushButton::clicked, [=](){ ui->txtISBN->setText(generateISBN()); });
+        q_ptr->connect(ui->btnSelectCover, &QPushButton::clicked, [=](){ selectCover(ui); });
+        q_ptr->connect(ui->btnRemoveCover, &QPushButton::clicked, [=](){ removeCover(ui); });
+    }
+
+    void selectCover(Ui::MangaEditor *ui) {
+        QList<QByteArray> supported = QImageReader::supportedImageFormats();
+        QString filter("All supported images (");
+        for (const QByteArray& ext : supported)
+            filter.append("*.").append(ext).append(" ");
+        filter.replace(filter.size()-1, 1, ")");
+        QString fname = QFileDialog::getOpenFileName(q_ptr, MangaEditor::tr("Select Cover"),
+                                                     QStandardPaths::writableLocation(QStandardPaths::PicturesLocation),
+                                                     filter, &filter);
+        if (!fname.isEmpty()) {
+            QFile f(fname);
+            QFileInfo fi(fname);
+            QString ext = fi.suffix();
+            f.copy(tmpPath + DS + "cover-image." + ext);
+            ui->btnViewCover->setEnabled(true);
+            ui->btnRemoveCover->setEnabled(true);
+            setIsModifiedTab(true);
+        }
+    }
+
+    void removeCover(Ui::MangaEditor *ui) {
+        QDir tmp(tmpPath);
+        QStringList files = tmp.entryList({"cover-image.*"});
+        if (files.size()) {
+            tmp.remove(files.at(0));
+            ui->btnViewCover->setEnabled(false);
+            ui->btnRemoveCover->setEnabled(false);
+            setIsModifiedTab(true);
+        }
     }
 
     MangaEditor * const q_ptr;
     QString tmpPath;
     QString chaptersPath;
     QString settingsPath;
+    QString coverPath;
     bool tabModified;
     QString projectFile;
     QStringList excludedWidgets;
@@ -245,7 +288,6 @@ MangaEditor::MangaEditor(QWidget *parent) :
     d_ptr(new MangaEditorPrivate(this))
 {
     d_ptr->initMangaEditor(ui);
-
 }
 
 MangaEditor::MangaEditor(const QString& filename, QWidget *parent) :

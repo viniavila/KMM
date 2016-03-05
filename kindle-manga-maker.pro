@@ -34,6 +34,7 @@ FORMS    += \
     about.ui
 
 DISTFILES += \
+    README.md \
     TODO_LIST
 
 LIBS += -lzip
