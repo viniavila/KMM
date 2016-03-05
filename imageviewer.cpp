@@ -23,6 +23,7 @@ public:
         labelImage->setScaledContents(true);
 
         ui->image_viewer_scroll_area->setWidget(labelImage);
+        ui->image_viewer_scroll_area->setAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
 
         QRect screen = QApplication::desktop()->screenGeometry(q_ptr->parentWidget());
         q_ptr->resize(0.7*screen.width(), 0.9*screen.height());
@@ -67,9 +68,9 @@ public:
         scaleFactor = 1.0;
         float nScaleFactor;
         if ((float)ui->image_viewer_scroll_area->width()/ui->image_viewer_scroll_area->height() < (float)labelImage->width()/labelImage->height())
-            nScaleFactor = (ui->image_viewer_scroll_area->width()) / (labelImage->width()+11.0);
+            nScaleFactor = (ui->image_viewer_scroll_area->width()) / (1.01*labelImage->width());
         else
-            nScaleFactor = (ui->image_viewer_scroll_area->height()) / (labelImage->height()+11.0);
+            nScaleFactor = (ui->image_viewer_scroll_area->height()) / (1.01*labelImage->height());
         scaleImage(ui, nScaleFactor);
     }
 
@@ -102,10 +103,9 @@ public:
     }
 
     void rotateLeft(Ui::ImageViewer *ui) {
-        QPixmap px = QPixmap(*labelImage->pixmap());
         QTransform mtx;
         mtx = mtx.rotate(-90);
-        px = px.transformed(mtx, Qt::SmoothTransformation);
+        QPixmap px = labelImage->pixmap()->transformed(mtx, Qt::SmoothTransformation);
         px.save(currentFile);
         labelImage->setPixmap(px);
         fitToWindow(ui);

@@ -74,6 +74,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Fit Image to the Window</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -93,6 +96,9 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Scale Image to its Original Size</string>
         </property>
         <property name="text">
          <string/>
@@ -114,6 +120,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Zoom In the Image</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -133,6 +142,9 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Zoom Out the Image</string>
         </property>
         <property name="text">
          <string/>
@@ -154,6 +166,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Rotate the Image Clockwise</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -173,6 +188,9 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Rotate the Image Counterclockwise</string>
         </property>
         <property name="text">
          <string/>
