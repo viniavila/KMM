@@ -18,20 +18,23 @@ SOURCES += main.cpp\
     kmm.cpp \
     preferences.cpp \
     about.cpp \
-    projarchive.cpp
+    projarchive.cpp \
+    imageviewer.cpp
 
 HEADERS  += \
     mangaeditor.h \
     kmm.h \
     preferences.h \
     about.h \
-    projarchive.h
+    projarchive.h \
+    imageviewer.h
 
 FORMS    += \
     mangaeditor.ui \
     kmm.ui \
     preferences.ui \
-    about.ui
+    about.ui \
+    imageviewer.ui
 
 DISTFILES += \
     README.md \

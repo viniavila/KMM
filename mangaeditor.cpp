@@ -1,5 +1,6 @@
 #include "mangaeditor.h"
 #include "ui_mangaeditor.h"
+#include "imageviewer.h"
 #include "projarchive.h"
 
 #include <QCryptographicHash>
@@ -228,6 +229,7 @@ public:
             loadDataToUI(ui->GeneralData);
             QStringList files = QDir(tmpPath).entryList({"cover-image.*"});
             if (files.size()) {
+                coverPath = tmpPath + DS + files.at(0);
                 ui->btnViewCover->setEnabled(true);
                 ui->btnRemoveCover->setEnabled(true);
             }
@@ -238,6 +240,7 @@ public:
 
         q_ptr->connect(ui->btnISBN, &QPushButton::clicked, [=](){ ui->txtISBN->setText(generateISBN()); });
         q_ptr->connect(ui->btnSelectCover, &QPushButton::clicked, [=](){ selectCover(ui); });
+        q_ptr->connect(ui->btnViewCover, &QPushButton::clicked, [=](){ viewCover(); });
         q_ptr->connect(ui->btnRemoveCover, &QPushButton::clicked, [=](){ removeCover(ui); });
     }
 
@@ -254,7 +257,10 @@ public:
             QFile f(fname);
             QFileInfo fi(fname);
             QString ext = fi.suffix();
-            f.copy(tmpPath + DS + "cover-image." + ext);
+            coverPath = tmpPath + DS + "cover-image." + ext;
+            if (QFileInfo(coverPath).exists())
+                QDir(tmpPath).remove(coverPath);
+            f.copy(coverPath);
             ui->btnViewCover->setEnabled(true);
             ui->btnRemoveCover->setEnabled(true);
             setIsModifiedTab(true);
@@ -266,9 +272,21 @@ public:
         QStringList files = tmp.entryList({"cover-image.*"});
         if (files.size()) {
             tmp.remove(files.at(0));
+            coverPath.clear();
             ui->btnViewCover->setEnabled(false);
             ui->btnRemoveCover->setEnabled(false);
             setIsModifiedTab(true);
+        }
+    }
+
+    void viewCover() {
+        QDir tmp(tmpPath);
+        QStringList files = tmp.entryList({"cover-image.*"});
+        if (files.size()) {
+            ImageViewer dlg(coverPath, q_ptr);
+            q_ptr->connect(&dlg, &ImageViewer::imageRotated, [=](){ setIsModifiedTab(true); });
+            dlg.setWindowTitle(MangaEditor::tr("View Cover"));
+            dlg.exec();
         }
     }
 
