@@ -22,7 +22,7 @@ public:
             // Throw Error
             char errMessage[100];
             zip_error_to_str(errMessage, 100, errCode, errno);
-            std::cout << "ERROR: " << errMessage << std::endl;
+            std::cout << "ERROR loading the ZIP file: " << errMessage << std::endl;
         }
         else {
             isValid = true;
@@ -51,13 +51,13 @@ public:
         // List and add all files in the dir
         QStringList files = dir.entryList(QDir::Files|QDir::NoDotAndDotDot|QDir::Readable, QDir::Name|QDir::LocaleAware);
         for (const QString& f : files) {
-            const char* path = QString(dirPath + "/" + f).toUtf8().data();
-            zip_source_t * zs = zip_source_file(za, path, 0, -1);
-            QString tag(arkD+f);
+            QString fPath(dirPath + "/" + f);
+            QString tag = QString(arkD+f);
+            zip_source_t * zs = zip_source_file(za, fPath.toUtf8().data(), 0, -1);
             if (zs == NULL || zip_file_add(za, tag.toUtf8().data(), zs, ZIP_FL_OVERWRITE|ZIP_FL_ENC_UTF_8) < 0) {
                 // Throw error adding the file
                 const char* errMessage = zip_strerror(za);
-                std::cout << "ERROR: " << errMessage << std::endl;
+                std::cout << "ERROR Adding the file to ZIP: " << errMessage << std::endl;
                 zip_source_free(zs);
             }
         }
@@ -66,8 +66,8 @@ public:
         QStringList dirs = dir.entryList(QDir::Dirs|QDir::NoDotAndDotDot|QDir::Readable|QDir::Executable, QDir::Name|QDir::LocaleAware);
         for (const QString& d : dirs) {
             QString tag(arkD+d+"/");
-            zip_dir_add(za, tag.toUtf8().data(), ZIP_FL_ENC_UTF_8);
             QString nDirPath(dirPath+"/"+d);
+            zip_dir_add(za, tag.toUtf8().data(), ZIP_FL_ENC_UTF_8);
             addRecursiveDir(nDirPath, tag);
         }
     }
@@ -112,7 +112,7 @@ void ProjArchive::extract(const QString &tmpPath) const {
             if (read <= 0) {
                 // Throw error
                 const char* errMessage = zip_file_strerror(zf);
-                std::cout << "ERROR: " << errMessage << std::endl;
+                std::cout << "ERROR Reading the ZIP file: " << errMessage << std::endl;
             }
             else {
                 QFileInfo fi(tmpPath + "/" + fName);
