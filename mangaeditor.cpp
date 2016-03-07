@@ -72,6 +72,7 @@ public:
         q_ptr->connect(ui->btnRemoveCover, &QPushButton::clicked, [=](){ removeCover(ui); });
         q_ptr->connect(ui->btnSelectPicFolder, &QPushButton::clicked, [=](){ selectPictureFolder(ui); });
         q_ptr->connect(ui->btnAddChapter, &QPushButton::clicked, [=](){ addChapter(ui); });
+        q_ptr->connect(ui->btnViewChapter, &QPushButton::clicked, [=]() { viewChapterImages(ui); });
         q_ptr->connect(ui->btnRemoveChapter, &QPushButton::clicked, [=](){ removeChapter(ui); });
         q_ptr->connect(ui->btnUpArrow, &QPushButton::clicked, [=](){ chapterOrderUp(ui); });
         q_ptr->connect(ui->btnDownArrow, &QPushButton::clicked, [=](){ chapterOrderDown(ui); });
@@ -346,7 +347,7 @@ public:
             file.copy(chapterPath + DS + f);
         }
 
-        // Add Information to content.ini
+        // Add Basic Information to content.ini
         QSettings s(settingsPath, QSettings::IniFormat);
         QString titles = s.value("Chapters/title", "").toString();
         QString folders = s.value("Chapters/folders", "").toString();
@@ -409,8 +410,16 @@ public:
         setIsModifiedTab(true);
     }
 
-    void viewChapterImages() {
+    void viewChapterImages(Ui::MangaEditor *ui) {
+        QList<QTableWidgetItem*> selected = ui->tblChapters->selectedItems();
+        if (selected.isEmpty()) return;
+        QTableWidgetItem *item = selected.first();
+        QString chapterFolder = chaptersPath + DS + item->data(Qt::UserRole).toString();
 
+        ImageViewer dlg(chapterFolder, q_ptr);
+        q_ptr->connect(&dlg, &ImageViewer::imageRotated, [=](){ setIsModifiedTab(true); });
+        dlg.setWindowTitle(item->data(Qt::DisplayRole).toString());
+        dlg.exec();
     }
 
     void updateChapterInformation(Ui::MangaEditor *ui, int row, int col=0) {
