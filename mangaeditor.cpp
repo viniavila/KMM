@@ -11,8 +11,6 @@
 #include <QStandardPaths>
 #include <QUuid>
 
-#include <QDebug>
-
 #define DS QDir::separator()
 
 class MangaEditorPrivate {
