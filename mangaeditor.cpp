@@ -73,6 +73,8 @@ public:
         q_ptr->connect(ui->btnSelectPicFolder, &QPushButton::clicked, [=](){ selectPictureFolder(ui); });
         q_ptr->connect(ui->btnAddChapter, &QPushButton::clicked, [=](){ addChapter(ui); });
         q_ptr->connect(ui->btnRemoveChapter, &QPushButton::clicked, [=](){ removeChapter(ui); });
+        q_ptr->connect(ui->btnUpArrow, &QPushButton::clicked, [=](){ chapterOrderUp(ui); });
+        q_ptr->connect(ui->btnDownArrow, &QPushButton::clicked, [=](){ chapterOrderDown(ui); });
 
         q_ptr->connect(ui->tblChapters, &QTableWidget::cellChanged, [=](int r, int c){ updateChapterInformation(ui, r, c); });
     }
@@ -415,12 +417,43 @@ public:
         // Remove Informatzion from content.ini
         QSettings s(settingsPath, QSettings::IniFormat);
         QStringList titles = s.value("Chapters/title", "").toString().split("::");
+        QStringList folders = s.value("Chapters/folders", "").toString().split("::");
         QStringList toTOC = s.value("Chapters/toTOC", "").toString().split("::");
         titles.replace(row, ui->tblChapters->item(row, col)->text());
+        folders.replace(row, ui->tblChapters->item(row, col)->data(Qt::UserRole).toString());
         toTOC.replace(row, ui->tblChapters->item(row, col)->checkState()==Qt::Checked?"1":"0");
         s.setValue("Chapters/title", titles.join("::"));
+        s.setValue("Chapters/folders", folders.join("::"));
         s.setValue("Chapters/toTOC", toTOC.join("::"));
         setIsModifiedTab(true);
+    }
+
+    void chapterOrderUp(Ui::MangaEditor *ui) {
+        QList<QTableWidgetItem*> items = ui->tblChapters->selectedItems();
+        if (items.isEmpty() || ui->tblChapters->rowCount() == 1) return;
+        QTableWidgetItem *item = items.first();
+        if (item->row() == 0) return;
+
+        int row = item->row();
+        QTableWidgetItem *item_down = new QTableWidgetItem(* ui->tblChapters->item(row, 0));
+        QTableWidgetItem *item_up = new QTableWidgetItem(* ui->tblChapters->item(row-1, 0));
+        ui->tblChapters->setItem(row, 0, item_up);
+        ui->tblChapters->setItem(row-1, 0, item_down);
+        ui->tblChapters->selectRow(row-1);
+    }
+
+    void chapterOrderDown(Ui::MangaEditor *ui) {
+        QList<QTableWidgetItem*> items = ui->tblChapters->selectedItems();
+        if (items.isEmpty() || ui->tblChapters->rowCount() == 1) return;
+        QTableWidgetItem *item = items.first();
+        if (item->row() == ui->tblChapters->rowCount()-1) return;
+
+        int row = item->row();
+        QTableWidgetItem *item_up = new QTableWidgetItem(* ui->tblChapters->item(row, 0));
+        QTableWidgetItem *item_down = new QTableWidgetItem(* ui->tblChapters->item(row+1, 0));
+        ui->tblChapters->setItem(row, 0, item_down);
+        ui->tblChapters->setItem(row+1, 0, item_up);
+        ui->tblChapters->selectRow(row+1);
     }
 
     MangaEditor * const q_ptr;

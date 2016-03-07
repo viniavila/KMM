@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>829</width>
+    <width>860</width>
     <height>535</height>
    </rect>
   </property>
@@ -43,7 +43,82 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="3">
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="txtPicFolder">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="3">
+       <widget class="QTableWidget" name="tblChapters">
+        <property name="acceptDrops">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;check line: &lt;/span&gt;insert the chapter into the Table of Contents.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;uncheck line: &lt;/span&gt;add the chapter into the ebook but ignore it in Table of Contents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <column>
+         <property name="text">
+          <string>Chapter Title</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QPushButton" name="btnUpArrow">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset theme="arrow-up">
+            <normaloff>.</normaloff>.</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnDownArrow">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset theme="arrow-down">
+            <normaloff>.</normaloff>.</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="0" colspan="4">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QPushButton" name="btnAddChapter">
@@ -89,49 +164,18 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="1" colspan="2">
+      <item row="1" column="1" colspan="3">
        <widget class="QLineEdit" name="txtChapterTitle">
         <property name="enabled">
          <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="txtPicFolder">
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
+      <item row="0" column="2" colspan="2">
        <widget class="QPushButton" name="btnSelectPicFolder">
         <property name="text">
          <string>Select</string>
         </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="3">
-       <widget class="QTableWidget" name="tblChapters">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;check line: &lt;/span&gt;insert the chapter into the Table of Contents.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;uncheck line: &lt;/span&gt;add the chapter into the ebook but ignore it in Table of Contents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::Box</enum>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::SingleSelection</enum>
-        </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
-        </property>
-        <column>
-         <property name="text">
-          <string>Chapter Title</string>
-         </property>
-        </column>
        </widget>
       </item>
      </layout>
@@ -457,7 +501,6 @@
   <tabstop>btnViewCover</tabstop>
   <tabstop>btnRemoveCover</tabstop>
   <tabstop>cboOutputType</tabstop>
-  <tabstop>txtPicFolder</tabstop>
   <tabstop>btnSelectPicFolder</tabstop>
   <tabstop>chkChapterTitle</tabstop>
   <tabstop>txtChapterTitle</tabstop>
