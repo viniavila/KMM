@@ -46,7 +46,7 @@
       <item row="2" column="0" colspan="3">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QPushButton" name="addChapter">
+         <widget class="QPushButton" name="btnAddChapter">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -114,14 +114,28 @@
        </widget>
       </item>
       <item row="3" column="0" colspan="3">
-       <widget class="QListWidget" name="lstChapters">
+       <widget class="QTableWidget" name="tblChapters">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;check line: &lt;/span&gt;insert the chapter into the Table of Contents.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;uncheck line: &lt;/span&gt;add the chapter into the ebook but ignore it in Table of Contents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::Box</enum>
         </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <column>
+         <property name="text">
+          <string>Chapter Title</string>
+         </property>
+        </column>
        </widget>
       </item>
      </layout>
-     <zorder>lstChapters</zorder>
+     <zorder>tblChapters</zorder>
      <zorder>label_8</zorder>
      <zorder>chkChapterTitle</zorder>
      <zorder>txtChapterTitle</zorder>
@@ -447,10 +461,10 @@
   <tabstop>btnSelectPicFolder</tabstop>
   <tabstop>chkChapterTitle</tabstop>
   <tabstop>txtChapterTitle</tabstop>
-  <tabstop>addChapter</tabstop>
+  <tabstop>btnAddChapter</tabstop>
   <tabstop>btnViewChapter</tabstop>
   <tabstop>btnRemoveChapter</tabstop>
-  <tabstop>lstChapters</tabstop>
+  <tabstop>tblChapters</tabstop>
  </tabstops>
  <resources/>
  <connections>

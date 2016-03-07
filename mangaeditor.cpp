@@ -23,6 +23,60 @@ public:
         excludedWidgets << "qt_spinbox_lineedit";
     }
 
+    void initMangaEditor(Ui::MangaEditor *ui, const QString& filename = QString()) {
+        ui->setupUi(q_ptr);
+        q_ptr->setFocusProxy(ui->txtName);
+        ui->dteDate->setDate(QDate::currentDate());
+        ui->tblChapters->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+        ui->tblChapters->verticalHeader()->setVisible(false);
+
+        addLanguages(ui->cboLanguage);
+
+        if (filename.isEmpty())
+            createTemporaryFolder();
+        else
+            createTemporaryFolder(filename);
+
+        if (!filename.isEmpty()) {
+            loadDataToUI(ui->GeneralData);
+
+            // Load Cover
+            QStringList files = QDir(tmpPath).entryList({"cover-image.*"});
+            if (files.size()) {
+                coverPath = tmpPath + DS + files.at(0);
+                ui->btnViewCover->setEnabled(true);
+                ui->btnRemoveCover->setEnabled(true);
+            }
+
+            // Load Chapters
+            QSettings s(settingsPath, QSettings::IniFormat);
+            QStringList titles = s.value("Chapters/title", "").toString().split("::");
+            QStringList folders = s.value("Chapters/folders", "").toString().split("::");
+            QStringList toTOC = s.value("Chapters/toTOC", "").toString().split("::");
+            for (int i=0; i<titles.size(); ++i) {
+                ui->tblChapters->insertRow(i);
+                QTableWidgetItem * item = new QTableWidgetItem(titles.at(i));
+                item->setCheckState(toTOC.at(i)=="0"?Qt::Unchecked:Qt::Checked);
+                item->setData(Qt::UserRole, folders.at(i));
+                ui->tblChapters->setItem(i, 0, item);
+            }
+
+        }
+
+        connectWidgetSignals(ui->GeneralData);
+        setAllValuesToTemp(ui->GeneralData);
+
+        q_ptr->connect(ui->btnISBN, &QPushButton::clicked, [=](){ ui->txtISBN->setText(generateISBN()); });
+        q_ptr->connect(ui->btnSelectCover, &QPushButton::clicked, [=](){ selectCover(ui); });
+        q_ptr->connect(ui->btnViewCover, &QPushButton::clicked, [=](){ viewCover(); });
+        q_ptr->connect(ui->btnRemoveCover, &QPushButton::clicked, [=](){ removeCover(ui); });
+        q_ptr->connect(ui->btnSelectPicFolder, &QPushButton::clicked, [=](){ selectPictureFolder(ui); });
+        q_ptr->connect(ui->btnAddChapter, &QPushButton::clicked, [=](){ addChapter(ui); });
+        q_ptr->connect(ui->btnRemoveChapter, &QPushButton::clicked, [=](){ removeChapter(ui); });
+
+        q_ptr->connect(ui->tblChapters, &QTableWidget::cellChanged, [=](int r, int c){ updateChapterInformation(ui, r, c); });
+    }
+
     void loadDataToUI(QWidget * parent) {
         QSettings s(settingsPath, QSettings::IniFormat);
         for (QWidget* widget : parent->findChildren<QWidget*>()) {
@@ -214,37 +268,6 @@ public:
         cb->setCurrentIndex(0);
     }
 
-    void initMangaEditor(Ui::MangaEditor *ui, const QString& filename = QString()) {
-        ui->setupUi(q_ptr);
-        q_ptr->setFocusProxy(ui->txtName);
-        ui->dteDate->setDate(QDate::currentDate());
-        addLanguages(ui->cboLanguage);
-
-        if (filename.isEmpty())
-            createTemporaryFolder();
-        else
-            createTemporaryFolder(filename);
-
-        if (!filename.isEmpty()) {
-            loadDataToUI(ui->GeneralData);
-            QStringList files = QDir(tmpPath).entryList({"cover-image.*"});
-            if (files.size()) {
-                coverPath = tmpPath + DS + files.at(0);
-                ui->btnViewCover->setEnabled(true);
-                ui->btnRemoveCover->setEnabled(true);
-            }
-        }
-
-        connectWidgetSignals(ui->GeneralData);
-        setAllValuesToTemp(ui->GeneralData);
-
-        q_ptr->connect(ui->btnISBN, &QPushButton::clicked, [=](){ ui->txtISBN->setText(generateISBN()); });
-        q_ptr->connect(ui->btnSelectCover, &QPushButton::clicked, [=](){ selectCover(ui); });
-        q_ptr->connect(ui->btnViewCover, &QPushButton::clicked, [=](){ viewCover(); });
-        q_ptr->connect(ui->btnRemoveCover, &QPushButton::clicked, [=](){ removeCover(ui); });
-        q_ptr->connect(ui->btnSelectPicFolder, &QPushButton::clicked, [=](){ selectPictureFolder(ui); });
-    }
-
     void selectCover(Ui::MangaEditor *ui) {
         QList<QByteArray> supported = QImageReader::supportedImageFormats();
         QString filter("All supported images (");
@@ -298,16 +321,106 @@ public:
         ui->txtPicFolder->setText(folder);
     }
 
-    void addChapter() {
+    void addChapter(Ui::MangaEditor *ui) {
+        QString title = ui->chkChapterTitle->isChecked() ? ui->txtChapterTitle->text() : "";
+        QString origFolder = ui->txtPicFolder->text();
+        if (origFolder.isEmpty()) return;
 
+        // Create Chapter Temporary Folder
+        QByteArray ba = QString("%1").arg(qrand()).toUtf8();
+        QString chapterPath = chaptersPath + DS;
+        QString chapterFolder = QCryptographicHash::hash(ba, QCryptographicHash::Md5).toHex();
+        chapterPath.append(chapterFolder);
+        QDir().mkdir(chapterPath);
+
+        // Copy just the pics to Chapter Temporary Folder
+        QDir dOrig(origFolder);
+        QStringList files = dOrig.entryList(QDir::Files|QDir::NoDotAndDotDot|QDir::Readable, QDir::Name|QDir::LocaleAware);
+        for (const QString& f : files) {
+            QString fPath(origFolder + DS + f);
+            QImageReader reader(fPath);
+            if (reader.format().isEmpty()) continue; // Ignore the file if it is not an image.
+            QFile file(fPath);
+            file.copy(chapterPath + DS + f);
+        }
+
+        // Add Information to content.ini
+        QSettings s(settingsPath, QSettings::IniFormat);
+        QString titles = s.value("Chapters/title", "").toString();
+        QString folders = s.value("Chapters/folders", "").toString();
+        QString toTOC = s.value("Chapters/toTOC", "").toString();
+        titles.append((titles.isEmpty() ? "" : "::") + title);
+        folders.append((folders.isEmpty() ? "" : "::") + chapterFolder);
+        toTOC.append((toTOC.isEmpty() ? "" : "::") + QString(title.isEmpty()?"0":"1"));
+        s.setValue("Chapters/title", titles);
+        s.setValue("Chapters/folders" , folders);
+        s.setValue("Chapters/toTOC", toTOC);
+
+        // Update the table in the UI
+        int row = ui->tblChapters->rowCount();
+        ui->tblChapters->insertRow(row);
+        QTableWidgetItem * item = new QTableWidgetItem(title);
+        item->setCheckState(title.isEmpty()?Qt::Unchecked:Qt::Checked);
+        item->setData(Qt::UserRole, chapterFolder);
+        ui->tblChapters->setItem(row, 0, item);
+
+        // Finish
+        ui->txtPicFolder->clear();
+        ui->txtChapterTitle->clear();
+        ui->chkChapterTitle->setChecked(false);
+        ui->btnSelectPicFolder->setFocus();
+        setIsModifiedTab(true);
     }
 
-    void removeChapter() {
+    void removeChapter(Ui::MangaEditor *ui) {
+        // TODO: Confirm before delete
 
+        // Get the Selected line
+        QList<QTableWidgetItem*> selected = ui->tblChapters->selectedItems();
+        if (selected.isEmpty()) return;
+        QTableWidgetItem *item = selected.first();
+        int row = item->row();
+
+        // Delete the folder from Temporary path
+        QString chapterFolder = chaptersPath + DS + item->data(Qt::UserRole).toString();
+        QDir d(chapterFolder);
+        d.removeRecursively();
+
+        // Remove Information from content.ini
+        QSettings s(settingsPath, QSettings::IniFormat);
+        QStringList titles = s.value("Chapters/title", "").toString().split("::");
+        QStringList folders = s.value("Chapters/folders", "").toString().split("::");
+        QStringList toTOC = s.value("Chapters/toTOC", "").toString().split("::");
+        titles.removeAt(row);
+        folders.removeAt(row);
+        toTOC.removeAt(row);
+        s.setValue("Chapters/title", titles.join("::"));
+        s.setValue("Chapters/folders" , folders.join("::"));
+        s.setValue("Chapters/toTOC", toTOC.join("::"));
+
+        // Update the table in the UI
+        ui->tblChapters->removeRow(row);
+
+        // Finish
+        ui->tblChapters->selectRow(row-1);
+        ui->tblChapters->setFocus();
+        setIsModifiedTab(true);
     }
 
     void viewChapterImages() {
 
+    }
+
+    void updateChapterInformation(Ui::MangaEditor *ui, int row, int col=0) {
+        // Remove Informatzion from content.ini
+        QSettings s(settingsPath, QSettings::IniFormat);
+        QStringList titles = s.value("Chapters/title", "").toString().split("::");
+        QStringList toTOC = s.value("Chapters/toTOC", "").toString().split("::");
+        titles.replace(row, ui->tblChapters->item(row, col)->text());
+        toTOC.replace(row, ui->tblChapters->item(row, col)->checkState()==Qt::Checked?"1":"0");
+        s.setValue("Chapters/title", titles.join("::"));
+        s.setValue("Chapters/toTOC", toTOC.join("::"));
+        setIsModifiedTab(true);
     }
 
     MangaEditor * const q_ptr;
