@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>860</width>
+    <width>880</width>
     <height>535</height>
    </rect>
   </property>
@@ -230,16 +230,6 @@
       <string>Ebook General Data</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="6" column="2" colspan="2">
-       <widget class="QCheckBox" name="chkDivideDouble">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;unchecked:&lt;/span&gt; double-page pictures will be rotated counterclockwise and kept in the same page.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;checked:&lt;/span&gt; doube-page pictures wil be half splitted and put in separated pages (the first and the second will determined by the selected reading direction - left-to-right will put the left side first and vice-versa).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Divide Double-Page Pictures</string>
-        </property>
-       </widget>
-      </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
@@ -481,6 +471,35 @@
         </layout>
        </widget>
       </item>
+      <item row="6" column="2">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>Double-page pictures</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="3">
+       <widget class="QComboBox" name="cboDoublePage">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>Do nothing</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Rotate</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Split</string>
+         </property>
+        </item>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -496,7 +515,6 @@
   <tabstop>cboLanguage</tabstop>
   <tabstop>txtDescription</tabstop>
   <tabstop>chkLR</tabstop>
-  <tabstop>chkDivideDouble</tabstop>
   <tabstop>btnSelectCover</tabstop>
   <tabstop>btnViewCover</tabstop>
   <tabstop>btnRemoveCover</tabstop>
