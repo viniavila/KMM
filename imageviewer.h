@@ -13,7 +13,6 @@ class ImageViewer : public QDialog {
     Q_DECLARE_PRIVATE(ImageViewer)
 public:
     ImageViewer(QWidget *parent = 0);
-    ImageViewer(const QStringList& files, QWidget *parent = 0);
     ImageViewer(const QString& path, QWidget *parent = 0);
     ~ImageViewer();
 

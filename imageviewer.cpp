@@ -2,6 +2,7 @@
 #include "ui_imageviewer.h"
 #include <QDesktopWidget>
 #include <QDebug>
+#include <QDir>
 #include <QFileInfo>
 #include <QLabel>
 #include <QScrollArea>
@@ -85,10 +86,20 @@ public:
         }
         else {
             labelImage->setPixmap(QPixmap::fromImage(img));
-            enableControls(ui, true);;
+            enableControls(ui, true);
             fitToWindow(ui);
             currentFile = path;
         }
+    }
+
+    void loadList(Ui::ImageViewer *ui, const QString& path) {
+        QDir d(path);
+        QStringList files = d.entryList(QDir::Files|QDir::NoDotAndDotDot|QDir::Readable, QDir::Name|QDir::LocaleAware);
+        if (files.isEmpty()) return;
+
+        ui->picList->addItems(files);
+        ui->picList->setCurrentRow(0);
+        loadFile(ui, path + "/" + files.first());
     }
 
     void rotateRight(Ui::ImageViewer *ui) {
@@ -125,14 +136,6 @@ ImageViewer::ImageViewer(QWidget *parent) :
     d_ptr->initialize(ui);
 }
 
-ImageViewer::ImageViewer(const QStringList& files, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ImageViewer),
-    d_ptr(new ImageViewerPrivate(this))
-{
-    d_ptr->initialize(ui);
-}
-
 ImageViewer::ImageViewer(const QString& path, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ImageViewer),
@@ -143,10 +146,12 @@ ImageViewer::ImageViewer(const QString& path, QWidget *parent) :
     QFileInfo fi(path);
     if (fi.isDir()) {
         // path is a dir
+        d_ptr->loadList(ui, path);
+        connect(ui->picList, &QListWidget::currentRowChanged, [=](int row){ d_ptr->loadFile(ui, path + "/" + ui->picList->item(row)->text()); });
     }
     else {
         // path is a file
-        ui->tableView->setVisible(false);
+        ui->picList->setVisible(false);
         adjustSize();
         d_ptr->loadFile(ui, path);
     }

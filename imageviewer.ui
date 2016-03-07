@@ -15,7 +15,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QTableView" name="tableView">
+    <widget class="QListWidget" name="picList">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -25,10 +25,16 @@
      <property name="frameShape">
       <enum>QFrame::Box</enum>
      </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
     </widget>
    </item>
    <item>
     <widget class="QScrollArea" name="image_viewer_scroll_area">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="frameShape">
       <enum>QFrame::Box</enum>
      </property>
@@ -233,6 +239,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>picList</tabstop>
+  <tabstop>btnFit</tabstop>
+  <tabstop>btnOriginal</tabstop>
+  <tabstop>btnZoomIn</tabstop>
+  <tabstop>btnZoomOut</tabstop>
+  <tabstop>btnRotateRight</tabstop>
+  <tabstop>btnRotateLeft</tabstop>
+  <tabstop>pushButton_6</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
