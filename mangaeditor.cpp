@@ -2,17 +2,18 @@
 #include "ui_mangaeditor.h"
 #include "imageviewer.h"
 #include "projarchive.h"
+#include "picanalyzeresult.h"
 
 #include <QCryptographicHash>
 #include <QDir>
 #include <QFileDialog>
 #include <QImageReader>
+#include <QMessageBox>
 #include <QProgressBar>
 #include <QSettings>
 #include <QStatusBar>
 #include <QStandardPaths>
 #include <QUuid>
-#include <QDebug>
 
 #define DS QDir::separator()
 
@@ -567,3 +568,46 @@ bool MangaEditor::tabModified() const {
 QString MangaEditor::tempPath() const {
     return d_ptr->tmpPath;
 }
+
+bool MangaEditor::analyzeChapterPictures() {
+    QSettings s(d_ptr->settingsPath, QSettings::IniFormat);
+    QStringList chaptersFolders = s.value("Chapters/folders", "").toString().split("::");
+    QStringList dpPictures;
+
+    if (chaptersFolders.isEmpty() || (chaptersFolders.size()==1 && chaptersFolders.first()=="")) {
+        // TODO: Error no chapters added to this project.
+    }
+    else {
+        for (const QString& cf : chaptersFolders) {
+            QString cPath = d_ptr->chaptersPath + DS + cf;
+            QDir d(cPath);
+            QStringList files = d.entryList(QDir::NoFilter, QDir::Name|QDir::LocaleAware);
+            for (const QString& f : files) {
+                QImageReader reader(cPath + DS + f);
+                QSize imgS = reader.size();
+                if (imgS.width() > imgS.height()) {
+                    // Detected as double page image
+                    dpPictures << cPath+DS+f;
+                }
+            }
+        }
+    }
+
+    if (dpPictures.isEmpty()) {
+        // No double page pictures were detected
+        QMessageBox msg(QMessageBox::Information, tr("Pictures Analyzer"),
+                        tr("No double page pictures were detected! Do you want to continue and generate the output file?"),
+                        QMessageBox::Yes|QMessageBox::No, window());
+        msg.setWindowModality(Qt::WindowModal);
+        if (msg.exec() != QMessageBox::Yes) return false;
+    }
+    else {
+        // Open dialog to confirm double page images treatment
+        PicAnalyzeResult dlg(dpPictures, ui->cboDoublePage->currentIndex(), ui->chkLR->isChecked(), window());
+        if (dlg.exec() == QDialog::Rejected) return false;
+        if (dlg.modified()) d_ptr->setIsModifiedTab(true);
+    }
+    // Continue and generate the desired file
+    return true;
+}
+

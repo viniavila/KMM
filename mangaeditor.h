@@ -27,6 +27,8 @@ public:
 
     QString tempPath() const;
 
+    bool analyzeChapterPictures();
+
 private:
     Ui::MangaEditor *ui;
     MangaEditorPrivate * const d_ptr;

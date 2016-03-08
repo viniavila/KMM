@@ -1,7 +1,6 @@
 #include "picanalyzeresult.h"
 #include "ui_picanalyzeresult.h"
 
-#include <QDebug>
 #include <QDesktopWidget>
 #include <QFileInfo>
 #include <QImageReader>

@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     preferences.cpp \
     about.cpp \
     projarchive.cpp \
-    imageviewer.cpp
+    imageviewer.cpp \
+    picanalyzeresult.cpp
 
 HEADERS  += \
     mangaeditor.h \
@@ -27,14 +28,16 @@ HEADERS  += \
     preferences.h \
     about.h \
     projarchive.h \
-    imageviewer.h
+    imageviewer.h \
+    picanalyzeresult.h
 
 FORMS    += \
     mangaeditor.ui \
     kmm.ui \
     preferences.ui \
     about.ui \
-    imageviewer.ui
+    imageviewer.ui \
+    picanalyzeresult.ui
 
 DISTFILES += \
     README.md \
