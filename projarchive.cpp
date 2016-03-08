@@ -132,6 +132,8 @@ void ProjArchive::save(const QString &tmpPath) {
         paths.removeFirst();
         tags.removeFirst();
 
+        // The only way to flush the added files to disk is closing the archive
+        // So, to track the progress, we have to close the archive after add a dir then open it again to receive another dir and its content
         zip_close(d_ptr->za);
         d_ptr->za = zip_open(d_ptr->path.toUtf8().data(), 0, &d_ptr->errCode);
     }
