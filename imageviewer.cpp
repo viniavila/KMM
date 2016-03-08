@@ -1,7 +1,6 @@
 #include "imageviewer.h"
 #include "ui_imageviewer.h"
 #include <QDesktopWidget>
-#include <QDebug>
 #include <QDir>
 #include <QFileInfo>
 #include <QLabel>
