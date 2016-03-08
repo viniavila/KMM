@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>503</width>
-    <height>149</height>
+    <width>514</width>
+    <height>153</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,6 +98,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>txtKindlegen</tabstop>
+  <tabstop>btnKindlegen</tabstop>
+  <tabstop>txtPython</tabstop>
+  <tabstop>btnPython</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
