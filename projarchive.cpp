@@ -7,8 +7,6 @@
 #include <QProgressBar>
 #include <QApplication>
 
-#include <QDebug>
-
 #define DS QDir::separator()
 
 class ProjArchivePrivate {
