@@ -17,6 +17,8 @@ public:
     MangaEditor(const QString& filename, QWidget *parent = 0);
     ~MangaEditor();
 
+    void saveProject(const QString& filename);
+
     void setProjectFile(const QString&);
     QString projectFile() const;
 

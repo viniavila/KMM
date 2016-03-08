@@ -17,207 +17,6 @@
    <string>new-manga.opf</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="0" column="1">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="title">
-      <string>Chapter List</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_8">
-        <property name="text">
-         <string>Select Pictures Folder</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="chkChapterTitle">
-        <property name="text">
-         <string>Table of Contents Title</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="txtPicFolder">
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="3">
-       <widget class="QTableWidget" name="tblChapters">
-        <property name="acceptDrops">
-         <bool>true</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;check line: &lt;/span&gt;insert the chapter into the Table of Contents.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;uncheck line: &lt;/span&gt;add the chapter into the ebook but ignore it in Table of Contents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::Box</enum>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::SingleSelection</enum>
-        </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
-        </property>
-        <column>
-         <property name="text">
-          <string>Chapter Title</string>
-         </property>
-        </column>
-       </widget>
-      </item>
-      <item row="3" column="3">
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QPushButton" name="btnUpArrow">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset theme="arrow-up">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btnDownArrow">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset theme="arrow-down">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="2" column="0" colspan="4">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QPushButton" name="btnAddChapter">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Add Chapter</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btnViewChapter">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>View Chapter</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btnRemoveChapter">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Remove Chapter</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="1" column="1" colspan="3">
-       <widget class="QLineEdit" name="txtChapterTitle">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2" colspan="2">
-       <widget class="QPushButton" name="btnSelectPicFolder">
-        <property name="text">
-         <string>Select</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-     <zorder>tblChapters</zorder>
-     <zorder>label_8</zorder>
-     <zorder>chkChapterTitle</zorder>
-     <zorder>txtChapterTitle</zorder>
-     <zorder>txtPicFolder</zorder>
-     <zorder>btnSelectPicFolder</zorder>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="title">
-      <string>Process Output</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QPlainTextEdit" name="txtOutput">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::Box</enum>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="0" column="0" rowspan="2">
     <widget class="QGroupBox" name="GeneralData">
      <property name="sizePolicy">
@@ -230,16 +29,6 @@
       <string>Ebook General Data</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="6" column="2" colspan="2">
-       <widget class="QCheckBox" name="chkDivideDouble">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;unchecked:&lt;/span&gt; double-page pictures will be rotated counterclockwise and kept in the same page.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;checked:&lt;/span&gt; doube-page pictures wil be half splitted and put in separated pages (the first and the second will determined by the selected reading direction - left-to-right will put the left side first and vice-versa).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Divide Double-Page Pictures</string>
-        </property>
-       </widget>
-      </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
@@ -481,7 +270,203 @@
         </layout>
        </widget>
       </item>
+      <item row="6" column="2">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>Double-page</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="3">
+       <widget class="QComboBox" name="cboDoublePage">
+        <item>
+         <property name="text">
+          <string>Do nothing</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Rotate</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Split</string>
+         </property>
+        </item>
+       </widget>
+      </item>
      </layout>
+    </widget>
+   </item>
+   <item row="0" column="1" rowspan="2">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Chapter List</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Select Pictures Folder</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="chkChapterTitle">
+        <property name="text">
+         <string>Table of Contents Title</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="txtPicFolder">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="3">
+       <widget class="QTableWidget" name="tblChapters">
+        <property name="acceptDrops">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;check line: &lt;/span&gt;insert the chapter into the Table of Contents.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;uncheck line: &lt;/span&gt;add the chapter into the ebook but ignore it in Table of Contents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <column>
+         <property name="text">
+          <string>Chapter Title</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QPushButton" name="btnUpArrow">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset theme="arrow-up">
+            <normaloff>.</normaloff>.</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnDownArrow">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset theme="arrow-down">
+            <normaloff>.</normaloff>.</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="0" colspan="4">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QPushButton" name="btnAddChapter">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Add Chapter</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnViewChapter">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>View Chapter</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnRemoveChapter">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Remove Chapter</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="1" colspan="3">
+       <widget class="QLineEdit" name="txtChapterTitle">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" colspan="2">
+       <widget class="QPushButton" name="btnSelectPicFolder">
+        <property name="text">
+         <string>Select</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+     <zorder>tblChapters</zorder>
+     <zorder>label_8</zorder>
+     <zorder>chkChapterTitle</zorder>
+     <zorder>txtChapterTitle</zorder>
+     <zorder>txtPicFolder</zorder>
+     <zorder>btnSelectPicFolder</zorder>
     </widget>
    </item>
   </layout>
@@ -496,7 +481,6 @@
   <tabstop>cboLanguage</tabstop>
   <tabstop>txtDescription</tabstop>
   <tabstop>chkLR</tabstop>
-  <tabstop>chkDivideDouble</tabstop>
   <tabstop>btnSelectCover</tabstop>
   <tabstop>btnViewCover</tabstop>
   <tabstop>btnRemoveCover</tabstop>

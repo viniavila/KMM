@@ -7,9 +7,12 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QImageReader>
+#include <QProgressBar>
 #include <QSettings>
+#include <QStatusBar>
 #include <QStandardPaths>
 #include <QUuid>
+#include <QDebug>
 
 #define DS QDir::separator()
 
@@ -19,6 +22,16 @@ public:
     MangaEditorPrivate(MangaEditor * parent) : q_ptr(parent), tabModified(false)
     {
         excludedWidgets << "qt_spinbox_lineedit";
+
+        QWidget *kmm;
+        for (QWidget* w : qApp->topLevelWidgets()) {
+            if (w->objectName() == "kmm") {
+                kmm = w;
+                break;
+            }
+        }
+        progressbar = kmm->findChild<QProgressBar*>("status_bar_qprogressbar");
+        statusbar = kmm->findChild<QStatusBar*>("kmm_qstatusbar");
     }
 
     void initMangaEditor(Ui::MangaEditor *ui, const QString& filename = QString()) {
@@ -51,12 +64,14 @@ public:
             QStringList titles = s.value("Chapters/title", "").toString().split("::");
             QStringList folders = s.value("Chapters/folders", "").toString().split("::");
             QStringList toTOC = s.value("Chapters/toTOC", "").toString().split("::");
-            for (int i=0; i<titles.size(); ++i) {
-                ui->tblChapters->insertRow(i);
-                QTableWidgetItem * item = new QTableWidgetItem(titles.at(i));
-                item->setCheckState(toTOC.at(i)=="0"?Qt::Unchecked:Qt::Checked);
-                item->setData(Qt::UserRole, folders.at(i));
-                ui->tblChapters->setItem(i, 0, item);
+            if (!folders.first().isEmpty()) {
+                for (int i=0; i<folders.size(); ++i) {
+                    ui->tblChapters->insertRow(i);
+                    QTableWidgetItem * item = new QTableWidgetItem(titles.at(i));
+                    item->setCheckState(toTOC.at(i)=="0"?Qt::Unchecked:Qt::Checked);
+                    item->setData(Qt::UserRole, folders.at(i));
+                    ui->tblChapters->setItem(i, 0, item);
+                }
             }
 
         }
@@ -113,23 +128,43 @@ public:
     }
 
     void createTemporaryFolder() {
+        // Generate the temporary folder name
         QByteArray ba = QString("%1").arg(qrand()).toUtf8();
         tmpPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + DS + QString("KMM-");
         tmpPath.append(QCryptographicHash::hash(ba, QCryptographicHash::Md5).toHex());
-        QDir().mkdir(tmpPath);
+
+        // Setting relevant variables
         settingsPath = tmpPath + DS + QString("content.ini");
         chaptersPath = tmpPath + DS + QString("chapters");
+
+        // Creating the temporary folder
+        QDir().mkdir(tmpPath);
         QDir().mkdir(chaptersPath);
     }
 
     void createTemporaryFolder(const QString& filename) {
+        // Generate the temporary folder name
         QByteArray ba = QString("%1").arg(qrand()).toUtf8();
         tmpPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + DS + QString("KMM-");
         tmpPath.append(QCryptographicHash::hash(ba, QCryptographicHash::Md5).toHex());
-        QDir().mkdir(tmpPath);
-        ProjArchive::loadFromFile(filename, tmpPath);
+
+        // Setting relevant variables
         settingsPath = tmpPath + DS + QString("content.ini");
         chaptersPath = tmpPath + DS + QString("chapters");
+
+        // Creating the temporary folder
+        QDir().mkdir(tmpPath);
+
+        // Extracting the filename archive to the temporary folder
+        statusbar->showMessage(MangaEditor::tr("Loading File: ") + filename + "...");
+        ProjArchive pa(filename, ProjArchive::InputMode);
+        pa.setProgressBar(progressbar);
+        if (pa.isValid()) {
+            pa.extract(tmpPath);
+            statusbar->showMessage(MangaEditor::tr("File loaded successfully!!"), 5000);
+        }
+        else
+            statusbar->showMessage(MangaEditor::tr("Error loading the file!!!"));
     }
 
     void removeTemporaryFolder() {
@@ -350,7 +385,7 @@ public:
         QString titles = s.value("Chapters/title", "").toString();
         QString folders = s.value("Chapters/folders", "").toString();
         QString toTOC = s.value("Chapters/toTOC", "").toString();
-        titles.append((titles.isEmpty() ? "" : "::") + title);
+        titles.append((titles.isEmpty() && folders.isEmpty() ? "" : "::") + title);
         folders.append((folders.isEmpty() ? "" : "::") + chapterFolder);
         toTOC.append((toTOC.isEmpty() ? "" : "::") + QString(title.isEmpty()?"0":"1"));
         s.setValue("Chapters/title", titles);
@@ -471,6 +506,8 @@ public:
     bool tabModified;
     QString projectFile;
     QStringList excludedWidgets;
+    QStatusBar *statusbar;
+    QProgressBar *progressbar;
 };
 
 MangaEditor::MangaEditor(QWidget *parent) :
@@ -493,6 +530,20 @@ MangaEditor::~MangaEditor() {
     d_ptr->removeTemporaryFolder();
     delete d_ptr;
     delete ui;
+}
+
+void MangaEditor::saveProject(const QString& filename) {
+    setEnabled(false);
+    d_ptr->statusbar->showMessage(MangaEditor::tr("Saving File: ") + filename + "...");
+    ProjArchive pa(filename, ProjArchive::OutputMode);
+    pa.setProgressBar(d_ptr->progressbar);
+    if (pa.isValid()) {
+        pa.save(d_ptr->tmpPath);
+        d_ptr->statusbar->showMessage(MangaEditor::tr("File saved successfully!!"), 5000);
+    }
+    else
+        d_ptr->statusbar->showMessage(MangaEditor::tr("Error saving the file!!!"));
+    setEnabled(true);
 }
 
 void MangaEditor::setProjectFile(const QString& s) {
