@@ -4,6 +4,10 @@
 #include <zip.h>
 
 #include <QDir>
+#include <QProgressBar>
+#include <QApplication>
+
+#include <QDebug>
 
 #define DS QDir::separator()
 
@@ -12,13 +16,14 @@ class ProjArchivePrivate {
 public:
     ProjArchivePrivate(ProjArchive* parent, const QString& path, ProjArchive::IOMode io) :
         q_ptr(parent),
-        path(path.toUtf8().data()),
+        path(path),
         io(io),
         errCode(0),
-        isValid(false)
+        isValid(false),
+        pbar(0)
     {
-        if (io == ProjArchive::InputMode) za = zip_open(this->path, ZIP_CHECKCONS, &errCode);
-        else za = zip_open(this->path, ZIP_CREATE|ZIP_EXCL, &errCode);
+        if (io == ProjArchive::InputMode) za = zip_open(this->path.toUtf8().data(), ZIP_CHECKCONS, &errCode);
+        else za = zip_open(this->path.toUtf8().data(), ZIP_CREATE|ZIP_EXCL, &errCode);
 
         if (errCode) {
             // Throw Error
@@ -47,39 +52,25 @@ public:
         if (za != NULL) zip_close(za);
     }
 
-    void addRecursiveDir(const QString& dirPath, const QString& arkD = QString()) {
-        QDir dir(dirPath);
-
-        // List and add all files in the dir
-        QStringList files = dir.entryList(QDir::Files|QDir::NoDotAndDotDot|QDir::Readable, QDir::Name|QDir::LocaleAware);
-        for (const QString& f : files) {
-            QString fPath(dirPath + DS + f);
-            QString tag = QString(arkD+f);
-            zip_source_t * zs = zip_source_file(za, fPath.toUtf8().data(), 0, -1);
-            if (zs == NULL || zip_file_add(za, tag.toUtf8().data(), zs, ZIP_FL_OVERWRITE|ZIP_FL_ENC_UTF_8) < 0) {
-                // Throw error adding the file
-                const char* errMessage = zip_strerror(za);
-                std::cout << "ERROR Adding the file to ZIP: " << errMessage << std::endl;
-                zip_source_free(zs);
-            }
+    int countDirsAndFilesRecursively(const QString& dpath) {
+        QDir d(dpath);
+        int i = d.entryList(QDir::Files|QDir::NoDotAndDotDot|QDir::Readable, QDir::Name|QDir::LocaleAware).count();
+        QStringList subdirs = d.entryList(QDir::Dirs|QDir::NoDotAndDotDot|QDir::Readable|QDir::Executable, QDir::Name|QDir::LocaleAware);
+        for (const QString& sd : subdirs) {
+            QString nDirPath(dpath+ DS + sd);
+            i++;
+            i += countDirsAndFilesRecursively(nDirPath);
         }
-
-        // List and add each dir recursively
-        QStringList dirs = dir.entryList(QDir::Dirs|QDir::NoDotAndDotDot|QDir::Readable|QDir::Executable, QDir::Name|QDir::LocaleAware);
-        for (const QString& d : dirs) {
-            QString tag(arkD+d+"/");
-            QString nDirPath(dirPath+ DS +d);
-            zip_dir_add(za, tag.toUtf8().data(), ZIP_FL_ENC_UTF_8);
-            addRecursiveDir(nDirPath, tag);
-        }
+        return i;
     }
 
     ProjArchive * const q_ptr;
-    const char* path;
+    QString path;
     ProjArchive::IOMode io;
     int errCode;
     bool isValid;
     zip_t* za;
+    QProgressBar *pbar;
 };
 
 ProjArchive::ProjArchive(const QString& path, IOMode io) :
@@ -93,11 +84,72 @@ ProjArchive::~ProjArchive() {
 }
 
 void ProjArchive::save(const QString &tmpPath) {
-    d_ptr->addRecursiveDir(tmpPath);
+    if (d_ptr->pbar) {
+        d_ptr->pbar->setVisible(true);
+        d_ptr->pbar->setMinimum(0);
+        d_ptr->pbar->setMaximum(d_ptr->countDirsAndFilesRecursively(tmpPath));
+        d_ptr->pbar->setValue(0);
+    }
+
+    QStringList paths({tmpPath});
+    QStringList tags({""});
+
+    while (paths.count()) {
+        QString dirPath = paths.first();
+        QString arkD = tags.first();
+        QDir dir(dirPath);
+
+        // List and add all files in the dir
+        QStringList files = dir.entryList(QDir::Files|QDir::NoDotAndDotDot|QDir::Readable, QDir::Name|QDir::LocaleAware);
+        for (const QString& f : files) {
+            QString fPath(dirPath + DS + f);
+            QString tag = QString(arkD+f);
+            zip_source_t * zs = zip_source_file(d_ptr->za, fPath.toUtf8().data(), 0, -1);
+            if (zs == NULL || zip_file_add(d_ptr->za, tag.toUtf8().data(), zs, ZIP_FL_OVERWRITE|ZIP_FL_ENC_UTF_8) < 0) {
+                // Throw error adding the file
+                const char* errMessage = zip_strerror(d_ptr->za);
+                std::cout << "ERROR Adding the file to ZIP: " << errMessage << std::endl;
+                zip_source_free(zs);
+            }
+            if (d_ptr->pbar) {
+                d_ptr->pbar->setValue(d_ptr->pbar->value()+1);
+            }
+        }
+
+        // List and add all dirs in the dir. Append the dirs to paths
+        QStringList dirs = dir.entryList(QDir::Dirs|QDir::NoDotAndDotDot|QDir::Readable|QDir::Executable, QDir::Name|QDir::LocaleAware);
+        for (const QString& d : dirs) {
+            QString tag(arkD+d+"/");
+            QString nDirPath(dirPath+ DS +d);
+            zip_dir_add(d_ptr->za, tag.toUtf8().data(), ZIP_FL_ENC_UTF_8);
+            paths << nDirPath;
+            tags << tag;
+            if (d_ptr->pbar) {
+                d_ptr->pbar->setValue(d_ptr->pbar->value()+1);
+            }
+        }
+
+        paths.removeFirst();
+        tags.removeFirst();
+
+        zip_close(d_ptr->za);
+        d_ptr->za = zip_open(d_ptr->path.toUtf8().data(), 0, &d_ptr->errCode);
+    }
+
+    if (d_ptr->pbar) {
+        d_ptr->pbar->setVisible(false);
+    }
 }
 
 void ProjArchive::extract(const QString &tmpPath) const {
-    for (int i=0; i<zip_get_num_entries(d_ptr->za, ZIP_FL_UNCHANGED); ++i) {
+    int nE = zip_get_num_entries(d_ptr->za, ZIP_FL_UNCHANGED);
+    if (d_ptr->pbar) {
+        d_ptr->pbar->setVisible(true);
+        d_ptr->pbar->setMinimum(0);
+        d_ptr->pbar->setMaximum(nE-1);
+        d_ptr->pbar->setValue(0);
+    }
+    for (int i=0; i<nE; ++i) {
         QString fName(zip_get_name(d_ptr->za, i, ZIP_FL_ENC_UTF_8));
         if (fName.right(1) == "/") {
             fName = tmpPath + DS + fName;
@@ -131,6 +183,13 @@ void ProjArchive::extract(const QString &tmpPath) const {
             zip_fclose(zf);
             delete[] buffer;
         }
+        if (d_ptr->pbar) {
+            d_ptr->pbar->setValue(d_ptr->pbar->value()+1);
+            QApplication::processEvents();
+        }
+    }
+    if (d_ptr->pbar) {
+        d_ptr->pbar->setVisible(false);
     }
 }
 
@@ -140,6 +199,10 @@ bool ProjArchive::isValid() const {
 
 ProjArchive::IOMode ProjArchive::ioMode() const {
     return d_ptr->io;
+}
+
+void ProjArchive::setProgressBar(QProgressBar *bar) {
+    d_ptr->pbar = bar;
 }
 
 void ProjArchive::saveToFile(const QString& filePath, const QString& tmpPath) {
