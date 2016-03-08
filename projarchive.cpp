@@ -5,8 +5,6 @@
 
 #include <QDir>
 
-#define DS QDir::separator()
-
 class ProjArchivePrivate {
     Q_DECLARE_PUBLIC(ProjArchive)
 public:
@@ -53,7 +51,7 @@ public:
         // List and add all files in the dir
         QStringList files = dir.entryList(QDir::Files|QDir::NoDotAndDotDot|QDir::Readable, QDir::Name|QDir::LocaleAware);
         for (const QString& f : files) {
-            QString fPath(dirPath + DS + f);
+            QString fPath(dirPath + "/" + f);
             QString tag = QString(arkD+f);
             zip_source_t * zs = zip_source_file(za, fPath.toUtf8().data(), 0, -1);
             if (zs == NULL || zip_file_add(za, tag.toUtf8().data(), zs, ZIP_FL_OVERWRITE|ZIP_FL_ENC_UTF_8) < 0) {
@@ -68,7 +66,7 @@ public:
         QStringList dirs = dir.entryList(QDir::Dirs|QDir::NoDotAndDotDot|QDir::Readable|QDir::Executable, QDir::Name|QDir::LocaleAware);
         for (const QString& d : dirs) {
             QString tag(arkD+d+"/");
-            QString nDirPath(dirPath+ DS +d);
+            QString nDirPath(dirPath+"/"+d);
             zip_dir_add(za, tag.toUtf8().data(), ZIP_FL_ENC_UTF_8);
             addRecursiveDir(nDirPath, tag);
         }
@@ -100,7 +98,7 @@ void ProjArchive::extract(const QString &tmpPath) const {
     for (int i=0; i<zip_get_num_entries(d_ptr->za, ZIP_FL_UNCHANGED); ++i) {
         QString fName(zip_get_name(d_ptr->za, i, ZIP_FL_ENC_UTF_8));
         if (fName.right(1) == "/") {
-            fName = tmpPath + DS + fName;
+            fName = tmpPath + "/" + fName;
             if (!QDir(fName).exists())
                 QDir().mkpath(fName);
         }
@@ -117,7 +115,7 @@ void ProjArchive::extract(const QString &tmpPath) const {
                 std::cout << "ERROR Reading the ZIP file: " << errMessage << std::endl;
             }
             else {
-                QFileInfo fi(tmpPath + DS + fName);
+                QFileInfo fi(tmpPath + "/" + fName);
 
                 if (!fi.absoluteDir().exists())
                     fi.dir().mkpath(fi.absoluteDir().absolutePath());

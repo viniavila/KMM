@@ -9,8 +9,6 @@
 #include <QImageReader>
 #include <QScrollBar>
 
-#define DS QDir::separator()
-
 class ImageViewerPrivate {
     Q_DECLARE_PUBLIC(ImageViewer)
 public:
@@ -101,7 +99,7 @@ public:
 
         ui->picList->addItems(files);
         ui->picList->setCurrentRow(0);
-        loadFile(ui, path + DS + files.first());
+        loadFile(ui, path + "/" + files.first());
     }
 
     void rotateRight(Ui::ImageViewer *ui) {
@@ -149,7 +147,7 @@ ImageViewer::ImageViewer(const QString& path, QWidget *parent) :
     if (fi.isDir()) {
         // path is a dir
         d_ptr->loadList(ui, path);
-        connect(ui->picList, &QListWidget::currentRowChanged, [=](int row){ d_ptr->loadFile(ui, path + DS + ui->picList->item(row)->text()); });
+        connect(ui->picList, &QListWidget::currentRowChanged, [=](int row){ d_ptr->loadFile(ui, path + "/" + ui->picList->item(row)->text()); });
     }
     else {
         // path is a file
