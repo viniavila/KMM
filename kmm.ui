@@ -37,7 +37,7 @@
      <x>0</x>
      <y>0</y>
      <width>674</width>
-     <height>24</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -56,10 +56,9 @@
     <property name="title">
      <string>Export</string>
     </property>
-    <addaction name="actionExport_to_cbr"/>
-    <addaction name="actionExport_to_cbz"/>
-    <addaction name="actionExport_to_epub"/>
-    <addaction name="actionCreate_mobi"/>
+    <addaction name="actCBZ"/>
+    <addaction name="actEPUB"/>
+    <addaction name="actMOBI"/>
     <addaction name="separator"/>
     <addaction name="actPreferences"/>
    </widget>
@@ -132,9 +131,15 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="actionCreate_mobi">
+  <action name="actMOBI">
    <property name="text">
     <string>Export to .mobi</string>
+   </property>
+   <property name="toolTip">
+    <string>Export to MOBIPOCKET format</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Shift+M</string>
    </property>
   </action>
   <action name="actPreferences">
@@ -171,19 +176,26 @@
     <string>Ctrl+W</string>
    </property>
   </action>
-  <action name="actionExport_to_epub">
+  <action name="actEPUB">
    <property name="text">
     <string>Export to .epub</string>
    </property>
-  </action>
-  <action name="actionExport_to_cbr">
-   <property name="text">
-    <string>Export to .cbr</string>
+   <property name="toolTip">
+    <string>Export the file to EPUB format</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Shift+E</string>
    </property>
   </action>
-  <action name="actionExport_to_cbz">
+  <action name="actCBZ">
    <property name="text">
     <string>Export to .cbz</string>
+   </property>
+   <property name="toolTip">
+    <string>Export the file to CBZ format</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Shift+Z</string>
    </property>
   </action>
  </widget>

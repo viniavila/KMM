@@ -207,6 +207,45 @@ public:
         dlg.exec();
     }
 
+    void exportCBZ(QTabWidget* tbW) {
+        MangaEditor* tab = qobject_cast<MangaEditor*>(tbW->currentWidget());
+        if (tab->analyzeChapterPictures()) {
+            QString dir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+            QString filter("Comic Book Archive - zip compression (*.cbz)");
+            QString fname = QFileDialog::getSaveFileName(q_ptr, kmm::tr("Export ebook to CBZ..."), dir, filter, &filter);
+            if (!fname.isEmpty()) {
+                if (fname.right(4) != ".cbz") fname.append(".cbz");
+                // Generate the output file
+            }
+        }
+    }
+
+    void exportEPUB(QTabWidget* tbW) {
+        MangaEditor* tab = qobject_cast<MangaEditor*>(tbW->currentWidget());
+        if (tab->analyzeChapterPictures()) {
+            QString dir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+            QString filter("Eletronic Publication format (*.epub)");
+            QString fname = QFileDialog::getSaveFileName(q_ptr, kmm::tr("Export ebook to EPUB..."), dir, filter, &filter);
+            if (!fname.isEmpty()) {
+                if (fname.right(5) != ".epub") fname.append(".epub");
+                // Generate the output file
+            }
+        }
+    }
+
+    void exportMOBI(QTabWidget* tbW) {
+        MangaEditor* tab = qobject_cast<MangaEditor*>(tbW->currentWidget());
+        if (tab->analyzeChapterPictures()) {
+            QString dir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+            QString filter("Mobipocket e-book format (*.mobi)");
+            QString fname = QFileDialog::getSaveFileName(q_ptr, kmm::tr("Export ebook to MOBI..."), dir, filter, &filter);
+            if (!fname.isEmpty()) {
+                if (fname.right(5) != ".mobi") fname.append(".mobi");
+                // Generate the output file
+            }
+        }
+    }
+
 };
 
 kmm::kmm(QWidget *parent) :
@@ -228,6 +267,9 @@ kmm::kmm(QWidget *parent) :
     connect(ui->actSave, &QAction::triggered, [=](){ d_ptr->saveProject(ui->kmm_main_tab_widget); });
     connect(ui->actSaveAs, &QAction::triggered, [=](){ d_ptr->saveAsProject(ui->kmm_main_tab_widget); });
     connect(ui->actClose, &QAction::triggered, [=](){ d_ptr->closeTab(ui->kmm_main_tab_widget, ui->kmm_main_tab_widget->currentIndex()); });
+    connect(ui->actCBZ, &QAction::triggered, [=](){ d_ptr->exportCBZ(ui->kmm_main_tab_widget); });
+    connect(ui->actEPUB, &QAction::triggered, [=](){ d_ptr->exportEPUB(ui->kmm_main_tab_widget); });
+    connect(ui->actMOBI, &QAction::triggered, [=](){ d_ptr->exportMOBI(ui->kmm_main_tab_widget); });
     connect(ui->actPreferences, &QAction::triggered, [=](){ d_ptr->preferences(); });
     connect(ui->actAbout, &QAction::triggered, [=](){ d_ptr->about(); });
     connect(ui->actAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
