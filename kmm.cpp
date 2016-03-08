@@ -10,7 +10,10 @@
 #include <QDateTime>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QProgressBar>
 #include <QStandardPaths>
+#include <QtConcurrent/QtConcurrent>
+#include <QFutureWatcher>
 
 class kmmPrivate {
     Q_DECLARE_PUBLIC(kmm)
@@ -22,6 +25,8 @@ public:
 
     kmm * const q_ptr;
     int tabCounter;
+    QProgressBar* progressBar;
+    QStatusBar* statusBar;
 
     void newProject(QTabWidget* tbW) {
         QWidget * tab = new MangaEditor;
@@ -72,7 +77,7 @@ public:
             tab->setProjectFile(fName);
             QFileInfo fi(fName);
             if (fi.exists()) QDir().remove(fName);
-            ProjArchive::saveToFile(fName, tab->tempPath());
+            tab->saveProject(fName);
             tab->setTabModified(false);
             tbW->setTabText(index, fi.fileName());
             rValue = true;
@@ -94,7 +99,7 @@ public:
             QString fName = tab->projectFile();
             QFileInfo fi(fName);
             if (fi.exists()) QDir().remove(fName);
-            ProjArchive::saveToFile(fName, tab->tempPath());
+            tab->saveProject(fName);
             tab->setTabModified(false);
             tbW->setTabText(index, fi.fileName());
             rValue = true;
@@ -210,6 +215,12 @@ kmm::kmm(QWidget *parent) :
     d_ptr(new kmmPrivate(this))
 {
     ui->setupUi(this);
+    d_ptr->progressBar = new QProgressBar;
+    d_ptr->progressBar->setObjectName("status_bar_qprogressbar");
+    d_ptr->progressBar->setVisible(false);
+    ui->kmm_qstatusbar->addPermanentWidget(d_ptr->progressBar);
+    d_ptr->statusBar = ui->kmm_qstatusbar;
+
     d_ptr->newProject(ui->kmm_main_tab_widget);
 
     connect(ui->actNew, &QAction::triggered, [=](){ d_ptr->newProject(ui->kmm_main_tab_widget); });

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1237</width>
-    <height>628</height>
+    <width>674</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,7 +36,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1237</width>
+     <width>674</width>
      <height>24</height>
     </rect>
    </property>
@@ -76,6 +76,7 @@
    <addaction name="menuRun"/>
    <addaction name="menuHelp"/>
   </widget>
+  <widget class="QStatusBar" name="kmm_qstatusbar"/>
   <action name="actNew">
    <property name="text">
     <string>New</string>
