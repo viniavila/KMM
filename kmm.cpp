@@ -1,6 +1,7 @@
 #include "kmm.h"
 #include "ui_kmm.h"
 #include "about.h"
+#include "bookexporter.h"
 #include "mangaeditor.h"
 #include "preferences.h"
 #include "projarchive.h"
@@ -216,6 +217,12 @@ public:
             if (!fname.isEmpty()) {
                 if (fname.right(4) != ".cbz") fname.append(".cbz");
                 // Generate the output file
+                if (QFileInfo(fname).exists()) QDir().remove(fname);
+                statusBar->showMessage(kmm::tr("Generating CBZ ebook in ")+fname);
+                if (BookExporter::generateCBZ(fname, tab->tempPath(), progressBar))
+                    statusBar->showMessage(kmm::tr("Ebook generated successfully!!!"), 5000);
+                else
+                    statusBar->showMessage(kmm::tr("Error generating ebook!!!"), 5000);
             }
         }
     }
@@ -229,6 +236,12 @@ public:
             if (!fname.isEmpty()) {
                 if (fname.right(5) != ".epub") fname.append(".epub");
                 // Generate the output file
+                if (BookExporter::generateEPUB(fname, tab->tempPath(), progressBar)) {
+                    // TODO: message WORKED!
+                }
+                else {
+                    // TODO: error generating ebook
+                }
             }
         }
     }
@@ -242,6 +255,12 @@ public:
             if (!fname.isEmpty()) {
                 if (fname.right(5) != ".mobi") fname.append(".mobi");
                 // Generate the output file
+                if (BookExporter::generateMOBI(fname, tab->tempPath(), progressBar)) {
+                    // TODO: message WORKED!
+                }
+                else {
+                    // TODO: error generating ebook
+                }
             }
         }
     }
