@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     about.cpp \
     projarchive.cpp \
     imageviewer.cpp \
-    picanalyzeresult.cpp
+    picanalyzeresult.cpp \
+    bookexporter.cpp
 
 HEADERS  += \
     mangaeditor.h \
@@ -29,7 +30,8 @@ HEADERS  += \
     about.h \
     projarchive.h \
     imageviewer.h \
-    picanalyzeresult.h
+    picanalyzeresult.h \
+    bookexporter.h
 
 FORMS    += \
     mangaeditor.ui \
