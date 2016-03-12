@@ -12,8 +12,11 @@ class RunExternalProcess : public QDialog
     Q_OBJECT
 
 public:
-    explicit RunExternalProcess(QWidget *parent = 0);
+    explicit RunExternalProcess(const QString& command, const QStringList& args, const QString& workingDirectory = QString(), QWidget *parent = 0);
     ~RunExternalProcess();
+
+public slots:
+    virtual int exec();
 
 private:
     Ui::RunExternalProcess *ui;
