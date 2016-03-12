@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     projarchive.cpp \
     imageviewer.cpp \
     picanalyzeresult.cpp \
-    bookexporter.cpp
+    bookexporter.cpp \
+    runexternalprocess.cpp
 
 HEADERS  += \
     mangaeditor.h \
@@ -31,7 +32,8 @@ HEADERS  += \
     projarchive.h \
     imageviewer.h \
     picanalyzeresult.h \
-    bookexporter.h
+    bookexporter.h \
+    runexternalprocess.h
 
 FORMS    += \
     mangaeditor.ui \
@@ -39,7 +41,8 @@ FORMS    += \
     preferences.ui \
     about.ui \
     imageviewer.ui \
-    picanalyzeresult.ui
+    picanalyzeresult.ui \
+    runexternalprocess.ui
 
 DISTFILES += \
     README.md \

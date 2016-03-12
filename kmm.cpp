@@ -219,10 +219,12 @@ public:
                 // Generate the output file
                 if (QFileInfo(fname).exists()) QDir().remove(fname);
                 statusBar->showMessage(kmm::tr("Generating CBZ ebook in ")+fname);
+                tab->setEnabled(false);
                 if (BookExporter::generateCBZ(fname, tab->tempPath(), progressBar))
                     statusBar->showMessage(kmm::tr("Ebook generated successfully!!!"), 5000);
                 else
                     statusBar->showMessage(kmm::tr("Error generating ebook!!!"), 5000);
+                tab->setEnabled(true);
             }
         }
     }

@@ -24,7 +24,7 @@ public:
     {
         excludedWidgets << "qt_spinbox_lineedit";
 
-        QWidget *kmm;
+        QWidget *kmm = 0;
         for (QWidget* w : qApp->topLevelWidgets()) {
             if (w->objectName() == "kmm") {
                 kmm = w;
