@@ -12,7 +12,8 @@ class kmm : public QMainWindow {
     Q_OBJECT
     Q_DECLARE_PRIVATE(kmm)
 public:
-    explicit kmm(QWidget *parent = 0);
+    kmm(QWidget *parent = 0);
+    kmm(const QString& filepath, QWidget* parent = 0);
     ~kmm();
 
 protected:

@@ -41,14 +41,18 @@ public:
     }
 
     void openProject(QTabWidget *tbW) {
+        QSettings s;
         QString filter("Kindle Manga Maker Project (*.kmp)");
+        QString dir = s.value("DEFAULT_PATH", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString();
         QString fName = QFileDialog::getOpenFileName(
                     q_ptr,
                     kmm::tr("Select Kindle Manga Maker Project File..."),
-                    QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
+                    dir,
                     filter, &filter);
         if (!fName.isEmpty() && QFileInfo(fName).exists()) {
             fName = fName.right(4) == ".kmp" ? fName : fName+".kmp";
+            QFileInfo fi(fName);
+            s.setValue("DEFAULT_PATH", fi.absoluteDir().path());
             MangaEditor * tab = new MangaEditor(fName, 0);
             tab->setProjectFile(fName);
             QString tbTitle(QFileInfo(fName).fileName());
@@ -65,19 +69,22 @@ public:
     }
 
     bool saveTabAs(QTabWidget* tbW, int index) {
+        QSettings s;
         bool rValue = false;
         MangaEditor* tab = qobject_cast<MangaEditor*>(tbW->widget(index));
         QString filter("Kindle Manga Maker Project (*.kmp)");
+        QString dir = s.value("DEFAULT_PATH", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString();
         QString fName = QFileDialog::getSaveFileName(
                     q_ptr,
                     kmm::tr("Save Kindle Manga Maker Project..."),
-                    QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
+                    dir,
                     filter, &filter);
         if (!fName.isEmpty()) {
             fName = fName.right(4) == ".kmp" ? fName : fName+".kmp";
             tab->setProjectFile(fName);
             QFileInfo fi(fName);
             if (fi.exists()) QDir().remove(fName);
+            s.setValue("DEFAULT_PATH", fi.absoluteDir().path());
             tab->saveProject(fName);
             tab->setTabModified(false);
             tbW->setTabText(index, fi.fileName());
@@ -209,15 +216,18 @@ public:
     }
 
     void exportCBZ(QTabWidget* tbW) {
+        QSettings s;
         MangaEditor* tab = qobject_cast<MangaEditor*>(tbW->currentWidget());
         if (tab->analyzeChapterPictures()) {
-            QString dir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+            QString dir = s.value("DEFAULT_PATH", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString();
             QString filter("Comic Book Archive - zip compression (*.cbz)");
             QString fname = QFileDialog::getSaveFileName(q_ptr, kmm::tr("Export ebook to CBZ..."), dir, filter, &filter);
             if (!fname.isEmpty()) {
                 if (fname.right(4) != ".cbz") fname.append(".cbz");
+                QFileInfo fi(fname);
+                s.setValue("DEFAULT_PATH", fi.absoluteDir().path());
                 // Generate the output file
-                if (QFileInfo(fname).exists()) QDir().remove(fname);
+                if (fi.exists()) QDir().remove(fname);
                 statusBar->showMessage(kmm::tr("Generating CBZ ebook in ")+fname);
                 tab->setEnabled(false);
                 if (BookExporter::generateCBZ(fname, tab->tempPath(), progressBar))
@@ -230,13 +240,16 @@ public:
     }
 
     void exportEPUB(QTabWidget* tbW) {
+        QSettings s;
         MangaEditor* tab = qobject_cast<MangaEditor*>(tbW->currentWidget());
         if (tab->analyzeChapterPictures()) {
-            QString dir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+            QString dir = s.value("DEFAULT_PATH", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString();
             QString filter("Eletronic Publication format (*.epub)");
             QString fname = QFileDialog::getSaveFileName(q_ptr, kmm::tr("Export ebook to EPUB..."), dir, filter, &filter);
             if (!fname.isEmpty()) {
                 if (fname.right(5) != ".epub") fname.append(".epub");
+                QFileInfo fi(fname);
+                s.setValue("DEFAULT_PATH", fi.absoluteDir().path());
                 // Generate the output file
                 if (BookExporter::generateEPUB(fname, tab->tempPath(), progressBar)) {
                     // TODO: message WORKED!
@@ -249,13 +262,16 @@ public:
     }
 
     void exportMOBI(QTabWidget* tbW) {
+        QSettings s;
         MangaEditor* tab = qobject_cast<MangaEditor*>(tbW->currentWidget());
         if (tab->analyzeChapterPictures()) {
-            QString dir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+            QString dir = s.value("DEFAULT_PATH", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString();
             QString filter("Mobipocket e-book format (*.mobi)");
             QString fname = QFileDialog::getSaveFileName(q_ptr, kmm::tr("Export ebook to MOBI..."), dir, filter, &filter);
             if (!fname.isEmpty()) {
                 if (fname.right(5) != ".mobi") fname.append(".mobi");
+                QFileInfo fi(fname);
+                s.setValue("DEFAULT_PATH", fi.absoluteDir().path());
                 // Generate the output file
                 if (BookExporter::generateMOBI(fname, tab->tempPath(), progressBar)) {
                     // TODO: message WORKED!
@@ -282,6 +298,42 @@ kmm::kmm(QWidget *parent) :
     d_ptr->statusBar = ui->kmm_qstatusbar;
 
     d_ptr->newProject(ui->kmm_main_tab_widget);
+
+    connect(ui->actNew, &QAction::triggered, [=](){ d_ptr->newProject(ui->kmm_main_tab_widget); });
+    connect(ui->actOpen, &QAction::triggered, [=](){ d_ptr->openProject(ui->kmm_main_tab_widget); });
+    connect(ui->actSave, &QAction::triggered, [=](){ d_ptr->saveProject(ui->kmm_main_tab_widget); });
+    connect(ui->actSaveAs, &QAction::triggered, [=](){ d_ptr->saveAsProject(ui->kmm_main_tab_widget); });
+    connect(ui->actClose, &QAction::triggered, [=](){ d_ptr->closeTab(ui->kmm_main_tab_widget, ui->kmm_main_tab_widget->currentIndex()); });
+    connect(ui->actCBZ, &QAction::triggered, [=](){ d_ptr->exportCBZ(ui->kmm_main_tab_widget); });
+    connect(ui->actEPUB, &QAction::triggered, [=](){ d_ptr->exportEPUB(ui->kmm_main_tab_widget); });
+    connect(ui->actMOBI, &QAction::triggered, [=](){ d_ptr->exportMOBI(ui->kmm_main_tab_widget); });
+    connect(ui->actPreferences, &QAction::triggered, [=](){ d_ptr->preferences(); });
+    connect(ui->actAbout, &QAction::triggered, [=](){ d_ptr->about(); });
+    connect(ui->actAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
+    connect(ui->actQuit, &QAction::triggered, this, &kmm::close);
+    connect(ui->kmm_main_tab_widget, &QTabWidget::tabCloseRequested, [=](int index) { d_ptr->closeTab(ui->kmm_main_tab_widget, index); });
+}
+
+kmm::kmm(const QString &filepath, QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::kmm),
+    d_ptr(new kmmPrivate(this))
+{
+    ui->setupUi(this);
+    d_ptr->progressBar = new QProgressBar;
+    d_ptr->progressBar->setObjectName("status_bar_qprogressbar");
+    d_ptr->progressBar->setVisible(false);
+    ui->kmm_qstatusbar->addPermanentWidget(d_ptr->progressBar);
+    d_ptr->statusBar = ui->kmm_qstatusbar;
+
+    MangaEditor * tab = new MangaEditor(filepath, 0);
+    tab->setProjectFile(filepath);
+    QString tbTitle(QFileInfo(filepath).fileName());
+    ui->kmm_main_tab_widget->setUpdatesEnabled(false);
+    ui->kmm_main_tab_widget->addTab(tab, tbTitle);
+    ui->kmm_main_tab_widget->setUpdatesEnabled(true);
+    ui->kmm_main_tab_widget->setCurrentWidget(tab);
+    ui->kmm_main_tab_widget->setFocus();
 
     connect(ui->actNew, &QAction::triggered, [=](){ d_ptr->newProject(ui->kmm_main_tab_widget); });
     connect(ui->actOpen, &QAction::triggered, [=](){ d_ptr->openProject(ui->kmm_main_tab_widget); });
