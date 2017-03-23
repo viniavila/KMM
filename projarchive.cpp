@@ -67,7 +67,7 @@ public:
     ProjArchive::IOMode io;
     int errCode;
     bool isValid;
-    zip_t* za;
+    zip* za;
     QProgressBar *pbar;
 };
 
@@ -102,7 +102,7 @@ void ProjArchive::save(const QString &tmpPath) {
         for (const QString& f : files) {
             QString fPath(dirPath + DS + f);
             QString tag = QString(arkD+f);
-            zip_source_t * zs = zip_source_file(d_ptr->za, fPath.toUtf8().data(), 0, -1);
+            zip_source * zs = zip_source_file(d_ptr->za, fPath.toUtf8().data(), 0, -1);
             if (zs == NULL || zip_file_add(d_ptr->za, tag.toUtf8().data(), zs, ZIP_FL_OVERWRITE|ZIP_FL_ENC_UTF_8) < 0) {
                 // Throw error adding the file
                 const char* errMessage = zip_strerror(d_ptr->za);
