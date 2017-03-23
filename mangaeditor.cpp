@@ -306,17 +306,20 @@ public:
     }
 
     void selectCover(Ui::MangaEditor *ui) {
+        QSettings s;
         QList<QByteArray> supported = QImageReader::supportedImageFormats();
         QString filter("All supported images (");
         for (const QByteArray& ext : supported)
             filter.append("*.").append(ext).append(" ");
         filter.replace(filter.size()-1, 1, ")");
+        QString dir = s.value("DEFAULT_PATH", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString();
         QString fname = QFileDialog::getOpenFileName(q_ptr, MangaEditor::tr("Select Cover"),
-                                                     QStandardPaths::writableLocation(QStandardPaths::PicturesLocation),
+                                                     dir,
                                                      filter, &filter);
         if (!fname.isEmpty()) {
             QFile f(fname);
             QFileInfo fi(fname);
+            s.setValue("DEFAULT_PATH", fi.absoluteDir().path());
             QString ext = fi.suffix();
             coverPath = tmpPath + DS + "cover-image." + ext;
             if (QFileInfo(coverPath).exists())
@@ -352,9 +355,11 @@ public:
     }
 
     void selectPictureFolder(Ui::MangaEditor *ui) {
-        QString folder = QFileDialog::getExistingDirectory(q_ptr,
-                                                           MangaEditor::tr("Select Chapter Folder"),
-                                                           QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+        QSettings s;
+        QString dir = s.value("DEFAULT_PATH", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString();
+        QString folder = QFileDialog::getExistingDirectory(q_ptr, MangaEditor::tr("Select Chapter Folder"), dir);
+        QFileInfo fi(folder);
+        s.setValue("DEFAULT_PATH", fi.absoluteDir().path());
         ui->txtPicFolder->setText(folder);
     }
 
