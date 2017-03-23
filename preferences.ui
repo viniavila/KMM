@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>514</width>
-    <height>153</height>
+    <width>521</width>
+    <height>209</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -80,6 +80,22 @@
        <widget class="QPushButton" name="btnPython">
         <property name="text">
          <string>Select</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>MOBI options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="chkEBOK">
+        <property name="text">
+         <string>Fix EBOK cdeType MOBI meta tag</string>
         </property>
        </widget>
       </item>
