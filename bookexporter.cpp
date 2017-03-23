@@ -7,6 +7,7 @@
 #include <QProcess>
 #include <QProgressBar>
 #include <QSettings>
+#include <QStandardPaths>
 #include <QUuid>
 
 #include "runexternalprocess.h"
@@ -466,7 +467,6 @@ bool BookExporter::generateMOBI(const QString& filename, const QString& tmpPath,
         // TODO: Not possible generate MOBI files. Specified KindleGen path does not exists
         return false;
     }
-    qDebug() << kindlegen << "t2";
 
     // Initializing progressbar
     if (bar) {
@@ -652,8 +652,56 @@ bool BookExporter::generateMOBI(const QString& filename, const QString& tmpPath,
     RunExternalProcess p(kindlegen, {"-dont_append_source", "-locale", "en", "content.opf"}, d->buildPath);
     p.exec();
 
+    // Fixing MOBI file to add EBOK tag if set in Preferences
+    bool willBeFixed = true;
+    QString mobiFile;
+    if (s.value("EBOK_TAG", false).toBool()) {
+        QString python = s.value("PYTHON_PATH", QString()).toString();
+        QFileInfo pyi(python);
+        if (pyi.exists()) {
+            if (pyi.isFile()) {
+                if (!pyi.isExecutable()) {
+                    qDebug() << "python path not exec";
+                    // TODO: Not possible fix MOBI files. Specified Python path is not an executable file
+                    willBeFixed = false;
+                }
+            }
+            else {
+                qDebug() << "python path not file";
+                // TODO: Not possible fix MOBI files. Specified Python path is not a file
+                willBeFixed = false;
+            }
+        }
+        else {
+            qDebug() << "python path not exists";
+            // TODO: Not possible fix MOBI files. Specified Python path does not exists
+            willBeFixed = false;
+        }
+
+        if (willBeFixed) {
+            // /usr/bin/python2 metafix.py "content.mobi" "4305989832"
+            QString pycommand = QString("%1 metafix.py \"content.mobi\" \"%2\"").arg(python).arg(bi.isbn);
+            QString metafix(d->buildPath + DS + "metafix.py");
+            QFile mf(":/scripts/metafix.py");
+            mf.copy(metafix);
+
+            QProcess pyp;
+            pyp.setProcessChannelMode(QProcess::MergedChannels);
+            pyp.setWorkingDirectory(d->buildPath);
+            pyp.start(pycommand);
+
+            if (!pyp.waitForFinished(10000))
+                pyp.kill();
+            QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).remove(metafix);
+            mobiFile = d->buildPath + DS + "content_fixed.mobi";
+        }
+        else {
+            mobiFile = d->buildPath + DS + "content.mobi";
+        }
+    }
+
     // Copy the generated file to destiny
-    QFile f(d->buildPath + DS + "content.mobi");
+    QFile f(mobiFile);
     f.copy(filename);
 
     return true;
