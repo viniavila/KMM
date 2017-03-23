@@ -1,6 +1,7 @@
 #include "runexternalprocess.h"
 #include "ui_runexternalprocess.h"
 #include <QProcess>
+#include <QStringList>
 
 QProcess *process;
 QString gcommand;
@@ -22,12 +23,24 @@ RunExternalProcess::RunExternalProcess(const QString& command, const QStringList
             [=](){ ui->plainTextEdit->appendPlainText(QString(process->readAllStandardOutput())); });
 }
 
-RunExternalProcess::~RunExternalProcess()
-{
+RunExternalProcess::~RunExternalProcess() {
     process->terminate();
     if (!process->waitForFinished(10000))
         process->kill();
     delete ui;
+}
+
+void RunExternalProcess::nonDialogMode(const QString& command, const QStringList& args, const QString& workingDirectory) {
+    process = new QProcess;
+    process->setProcessChannelMode(QProcess::MergedChannels);
+    if (!workingDirectory.isEmpty())
+        process->setWorkingDirectory(workingDirectory);
+    connect(process, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), [=](){
+        process->terminate();
+        if (!process->waitForFinished(10000))
+            process->kill();
+    });
+    process->start(command, args);
 }
 
 int RunExternalProcess::exec() {

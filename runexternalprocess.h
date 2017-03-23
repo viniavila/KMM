@@ -15,6 +15,8 @@ public:
     explicit RunExternalProcess(const QString& command, const QStringList& args, const QString& workingDirectory = QString(), QWidget *parent = 0);
     ~RunExternalProcess();
 
+    static void nonDialogMode(const QString& command, const QStringList& args, const QString& workingDirectory = QString());
+
 public slots:
     virtual int exec();
 
