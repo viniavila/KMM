@@ -55,7 +55,7 @@
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
-       <number>0</number>
+       <number>5</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -87,8 +87,14 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="zoom-fit-best">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset resource="resources.qrc">
+          <normaloff>:/svg/zoom_fit.svg</normaloff>:/svg/zoom_fit.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -110,8 +116,14 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="zoom-original">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset resource="resources.qrc">
+          <normaloff>:/svg/zoom_normal.svg</normaloff>:/svg/zoom_normal.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -133,8 +145,14 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="zoom-in">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset resource="resources.qrc">
+          <normaloff>:/svg/zoom_plus.svg</normaloff>:/svg/zoom_plus.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -156,8 +174,14 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="zoom-out">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset resource="resources.qrc">
+          <normaloff>:/svg/zoom_minus.svg</normaloff>:/svg/zoom_minus.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -179,8 +203,14 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="object-rotate-right">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset resource="resources.qrc">
+          <normaloff>:/svg/rotate_right.svg</normaloff>:/svg/rotate_right.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -202,8 +232,14 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="object-rotate-left">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset resource="resources.qrc">
+          <normaloff>:/svg/rotate_left.svg</normaloff>:/svg/rotate_left.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -249,7 +285,9 @@
   <tabstop>btnRotateLeft</tabstop>
   <tabstop>pushButton_6</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>pushButton_6</sender>

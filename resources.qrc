@@ -5,4 +5,14 @@
     <qresource prefix="/scripts">
         <file>metafix.py</file>
     </qresource>
+    <qresource prefix="/">
+        <file>svg/rotate_left.svg</file>
+        <file>svg/rotate_right.svg</file>
+        <file>svg/zoom_fit.svg</file>
+        <file>svg/zoom_minus.svg</file>
+        <file>svg/zoom_normal.svg</file>
+        <file>svg/zoom_plus.svg</file>
+        <file>svg/arrow_down.svg</file>
+        <file>svg/arrow_up.svg</file>
+    </qresource>
 </RCC>

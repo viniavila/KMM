@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="256"
+   height="256"
+   viewBox="0 0 67.733332 67.733335"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="rotate_left.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.515625"
+     inkscape:cx="-217.1486"
+     inkscape:cy="256.81141"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1366"
+     inkscape:window-height="719"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     showguides="false" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-229.26665)">
+    <path
+       style="fill:#4d4d4d;stroke:none;stroke-width:0.32971656"
+       d="m 33.866667,238.12192 a 26.458331,26.458331 0 0 0 -26.4583335,26.45833 26.458331,26.458331 0 0 0 7.4640155,18.3742 l -5.1902532,5.19026 H 29.525846 v -19.84375 l -5.302486,5.30248 a 13.229166,13.229166 0 0 1 -3.585859,-9.02319 13.229166,13.229166 0 0 1 13.229166,-13.22916 13.229166,13.229166 0 0 1 13.229167,13.22916 13.229166,13.229166 0 0 1 -3.880578,9.3486 l 9.348589,9.34858 A 26.458331,26.458331 0 0 0 60.325,264.58025 26.458331,26.458331 0 0 0 33.866667,238.12192 Z"
+       id="path4723"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
