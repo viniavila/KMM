@@ -24,6 +24,9 @@ This program is designed to make documents compatible with **Kindle Paperwhite 2
 
 The current version is named 0.1. It's a development version and can get new modifications without number change release. When all main function are implemented, I will lock these release numbers using the tag system from git.
 
+This version compiles smoothly from a Linux or MacOS machine (requires libzip-dev on both). To compile for Windows, there needs to have some tweaks but I could compile to MSVC2017 on a Windows 10 notebook. I will try to create a procedure to compile it using Visual Studio or CMake.
+
+
 ## Install ##
 
 The installation is pretty straight if you have already the right packages. Basically you have to install these programs from your distribution:
@@ -39,25 +42,23 @@ Having installed all necessary stuff, let's go to the steps
 
 ```
 #!bash
-git clone git@bitbucket.org:viniavila/kindle-manga-maker.git
-git clone https://viniavila@bitbucket.org/viniavila/kindle-manga-maker.git
+git clone git://github.com/viniavila/KMM.git
+git clone https://github.com/viniavila/KMM.git
 ```
 
 So go to the folder:
 
 ```
 #!bash
-cd kindle-manga-maker/
+cd KMM/
 ```
 
 * Compile the program with
 
 ```
 #!bash
-
 qmake kindle-manga-maker.pro
 make
-
 ```
 
 * Double click the file compiled.
